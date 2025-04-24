@@ -1,0 +1,77 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      global-key-listener:
+        specifier: ^1.0.2
+        version: 1.0.2
+      node-global-key-listener:
+        specifier: ^0.3.0
+        version: 0.3.0
+      ws:
+        specifier: ^8.18.1
+        version: 8.18.1
+
+packages:
+
+  '@types/node@20.17.30':
+    resolution: {integrity: sha512-7zf4YyHA+jvBNfVrk2Gtvs6x7E8V+YDW05bNfG2XkWDJfYRXrTiP/DsB2zSYTaHX0bGIujTBQdMVAhb+j7mwpg==}
+
+  global-key-listener@1.0.2:
+    resolution: {integrity: sha512-lylhNkg2uMgFGGvcXAVrPkSrbwnFOnDHlYysCtrlGbW+7sPrGZZl68ZfaKiGdbWkMyi7+wSVNqOWmiueuHe/pA==}
+
+  node-global-key-listener@0.2.0:
+    resolution: {integrity: sha512-hC/up7q63dDFNX3xF1h2OfGkKOo4mBq5YZ7SSzqLQiFbSZsu7JP3L+i23/W+jhvBWuJfLW2vY0RDiWap5dsnPg==}
+
+  node-global-key-listener@0.3.0:
+    resolution: {integrity: sha512-yWB1OFrDlzXYm3+hYcE8xOscvclpBAQGXcBnc2ytenFLkZfxFipuCwhuIIlIKVtwBuDRkdXJVZMqN99cPVBFFA==}
+
+  sudo-prompt@9.2.1:
+    resolution: {integrity: sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+  ws@8.18.1:
+    resolution: {integrity: sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+snapshots:
+
+  '@types/node@20.17.30':
+    dependencies:
+      undici-types: 6.19.8
+
+  global-key-listener@1.0.2:
+    dependencies:
+      '@types/node': 20.17.30
+      node-global-key-listener: 0.2.0
+
+  node-global-key-listener@0.2.0:
+    dependencies:
+      sudo-prompt: 9.2.1
+
+  node-global-key-listener@0.3.0:
+    dependencies:
+      sudo-prompt: 9.2.1
+
+  sudo-prompt@9.2.1: {}
+
+  undici-types@6.19.8: {}
+
+  ws@8.18.1: {}
