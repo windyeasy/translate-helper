@@ -1,6 +1,6 @@
 import { getCurrentInstance } from 'vue'
 
-export default useNeuApp = () => {
+export default function useNeuApp() {
   const instance = getCurrentInstance()
   const { $neuApp } = instance.appContext.config.globalProperties
   

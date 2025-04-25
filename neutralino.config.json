@@ -18,7 +18,8 @@
     "events.*",
     "window.*",
     "debug.log",
-    "clipboard.*"
+    "clipboard.*",
+    "extensions.*"
   ],
   "modes": {
     "window": {
@@ -65,9 +66,8 @@
   "cli": {
     "binaryName": "neutralino",
     "resourcesPath": "/vue-src/dist",
+    "extensionsPath": "/extensions/",
     "clientLibrary": "/vue-src/dist/neulib/neutralino.js", 
-    "binaryVersion": "6.0.0",
-    "clientVersion": "6.0.0",
     "frontendLibrary": {
       "patchFile": "/vue-src/index.html",
       "devUrl": "http://localhost:5173",
@@ -76,5 +76,12 @@
       "devCommand": "npm run dev",
       "buildCommand": "npm run build"
     }
-  }
+  },
+  "enableExtensions": true,
+  "extensions": [{
+    "id": "js.neutralino.hotkeybynode",
+    "commandLinux": "node ${NL_PATH}/extensions/hotkey/main.js --linux",
+    "commandDarwin": "node ${NL_PATH}/extensions/hotkey/main.js --darwin",
+    "commandWindows": "node ${NL_PATH}/extensions/hotkey/main.js --windows"
+  }]
 }

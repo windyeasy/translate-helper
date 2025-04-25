@@ -1,8 +1,7 @@
 {
   "name": "hotkey-server",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "main": "test.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,8 +11,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "global-key-listener": "^1.0.2",
-    "node-global-key-listener": "^0.3.0",
-    "ws": "^8.18.1"
+    "chalk": "^4.1.2",
+    "minimist": "^1.2.6",
+    "uuid": "^8.3.2",
+    "websocket": "^1.0.34",
+    "node-global-key-listener": "^0.3.0"
   }
 }
