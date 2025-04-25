@@ -1,20 +1,23 @@
 # translate-helper
 
-A cross-platform desktop application for translation.
+English | [简体中文](./README.zh-CN.md)
 
-## TODO LIST
+A cross-platform desktop translation aid tool, currently only supports the Windows platform, using [Neutralinojs](https://neutralino.js.org/).
 
-- [ ] 开机自启
-- [ ] 切换功能，打开关闭，拷贝复制输入框
-- [ ] 实现翻译布局和翻译功能
-- [ ] 如何将node的服务打包入到neuralinojs中？
+## Features
 
-## run
+- [ ] cross-platform desktop
+
+## Run
 
 ```sh
 npm install @neutralinojs/neu -g
 
 neu update
+# 安装extensions依赖
+cd ./extensions/hotkey
+pnpm install 
+cd ../..
 neu run
 ```
 
@@ -23,3 +26,7 @@ neu run
 ```sh
 neu build
 ```
+
+## License
+
+It is MIT.
