@@ -1,8 +1,8 @@
 import AppCoreByNeu from "./app-core-by-neu";
 import useNeuApp from "./hooks/useNeuApp";
+import Neutralino from "@neutralinojs/lib"
 function createNeuApp(config = {}) {
   return (app) => {
-    // Neutralino is global Object
     const neuApp = new AppCoreByNeu(Neutralino)
     neuApp.init(config)
 

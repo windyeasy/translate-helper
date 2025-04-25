@@ -18,13 +18,13 @@ class AppCoreByNeu extends EasyEventBus {
    * @param {Array<string>} config.toggleHotkey  toggle hide or show  window.
    * @param {Array<string>} config.tranlateHotkey click the hotkey to automatically translate the text from the clipboard.
    * @param {Object} config.neuConfig 
-   * 
+   *   
    */
   init(config) {
     this._config = config;
   
     this.toggleHotkey = config.toggleHotkey || ["ctrl", "alt", "h"];
-    this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "h"];
+    this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "alt", "f"];
     this.native.init(config.neuConfig || {});
 
     // init task

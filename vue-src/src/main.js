@@ -10,6 +10,9 @@ import "normalize.css"
 const app = createApp(App)
 app.use(createPinia())
 app.use(router)
+
+console.log(window)
 app.use(createNeuApp())
 
 app.mount('#app')
+

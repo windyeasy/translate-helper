@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@neutralinojs/lib':
+        specifier: ^6.0.0
+        version: 6.0.0
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -343,6 +346,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@neutralinojs/lib@6.0.0':
+    resolution: {integrity: sha512-DZzkDTREfHmNubAIJAnzb/SlMImxLPHWW+hvOHogOVusxP+DJgVLGWWg9v2I3Hpts3kUD4ZW09nAovYRazBLnw==}
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -1249,6 +1255,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@neutralinojs/lib@6.0.0': {}
 
   '@polka/url@1.0.0-next.29': {}
 
