@@ -6,6 +6,8 @@ import router from './router'
 import { createNeuApp } from './neu-app-core/index.js'
 
 import "normalize.css"
+import 'virtual:uno.css'
+import "./styles/main.css"
 
 const app = createApp(App)
 app.use(createPinia())

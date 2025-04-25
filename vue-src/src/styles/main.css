@@ -1,0 +1,69 @@
+:root {
+  --c-bg: #fff;
+
+  --c-scrollbar: #eee;
+  --c-scrollbar-hover: #bbb;
+  --c-item-bg: #ebe9e8;
+
+  /* text */
+  --c-text-color: #333;
+  --c-sub-text-color: #666;
+
+  /* border */
+  --c-border-color: #d6d3d1;
+}
+
+html {
+  background-color: var(--c-bg);
+  color: var(--c-text-color);
+  overflow-x: hidden;
+}
+body {
+  background-color: var(--c-bg);
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark {
+  --c-bg: #262626;
+  --c-scrollbar: #111;
+  --c-scrollbar-hover: #222;
+  --c-text-color: #fff;
+  --c-sub-text-color: #9a9a9a;
+  --c-item-bg: #404040;
+  --c-border-color: #333333;
+}
+
+::selection {
+  background: #8884;
+}
+
+
+
+* {
+  scrollbar-color: var(--c-scrollbar) var(--c-bg);
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--c-bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-scrollbar);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-scrollbar-hover);
+}
