@@ -23,7 +23,7 @@
   ],
   "modes": {
     "window": {
-      "title": "tranlate-helper",
+      "title": "TranlateHelper",
       "maxWidth": 900,  
       "maxHeight": 700,
       "center": true,

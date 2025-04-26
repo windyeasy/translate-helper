@@ -73,10 +73,8 @@ class AppCoreByNeu extends EasyEventBus {
   checkKeyboard(key, value){
     key = key.toUpperCase()
     const valueArray = value.split(" ")
-  
     if (valueArray.length){
-      const testValue = valueArray.pop().toUpperCase()
-      return key.toUpperCase() === testValue
+      return key.toUpperCase() === valueArray.pop().toUpperCase()
     }
     return false
   }
@@ -210,7 +208,7 @@ class AppCoreByNeu extends EasyEventBus {
   setTray(tray) {
     // Conditional initialization: Set up system tray if not running on macOS
     if (NL_OS != "Darwin") {
-      // TODO: Fix https://github.com/Neujs/Neujs/issues/615
+      // TODO: Fix https://github.com/neutralinojs/neutralinojs/issues/615
       this.native.os.setTray(tray);
     }
   }

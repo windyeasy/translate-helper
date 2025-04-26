@@ -8,10 +8,19 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CustomIcons: typeof import('./src/components/icons/svg-icon.vue')['default']
+    DefaultIcons: typeof import('./src/components/icons/define-icons.vue')['default']
+    DefineIcons: typeof import('./src/components/icons/define-icons.vue')['default']
+    IconButton: typeof import('./src/components/icon-button.vue')['default']
+    IconEnter: typeof import('./src/components/icons/svg-icon.vue')['default']
+    IconItem: typeof import('./src/components/icon-item.vue')['default']
     IconMoon: typeof import('./src/components/icons/icon-moon.vue')['default']
     MoonIcon: typeof import('./src/components/icons/icon-moon.vue')['default']
     NoResults: typeof import('./src/components/no-results.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./src/components/icons/svg-icon.vue')['default']
+    WordList: typeof import('./src/components/word-list.vue')['default']
+    WordResult: typeof import('./src/components/word-result.vue')['default']
   }
 }

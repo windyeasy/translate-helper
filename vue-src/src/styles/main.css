@@ -24,14 +24,15 @@ body {
   width: 100vw;
   position: relative;
   overflow: hidden;
+  font-size: 14px;
 }
 
 html.dark {
   --c-bg: #262626;
   --c-scrollbar: #111;
   --c-scrollbar-hover: #222;
-  --c-text-color: #fff;
-  --c-sub-text-color: #9a9a9a;
+  --c-text-color: #f1f1f1;
+  --c-sub-text-color: #a7a7a7;
   --c-item-bg: #404040;
   --c-border-color: #333333;
 }
@@ -66,4 +67,9 @@ html.dark {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--c-scrollbar-hover);
+}
+
+/* box-sizing */
+div, main, footer, header {
+  box-sizing: border-box;
 }

@@ -7,7 +7,8 @@ import HomeMainContent from "./c-cpns/home-main-content.vue";
 
 <template>
   <div class="home-container flex flex-col h-full">
-    <main class="flex-1">
+    <!-- todo: 请求加载动画 -->
+    <main class="flex-1 flex flex-col hidden">
       <HomeMainHeader />
       <HomeMainContent />
     </main>
