@@ -3,7 +3,12 @@
 
   --c-scrollbar: #eee;
   --c-scrollbar-hover: #bbb;
+
+  /* icon-item */
   --c-item-bg: #ebe9e8;
+
+  /* modal */
+  --c-modal-bg: #fff;
 
   /* text */
   --c-text-color: #333;
@@ -11,6 +16,12 @@
 
   /* border */
   --c-border-color: #d6d3d1;
+
+  /* select */
+  --c-select-hover: #f5f7fa;
+
+  /* loading */
+  --c-loading: #9a9a9a;
 }
 
 html {
@@ -31,10 +42,22 @@ html.dark {
   --c-bg: #262626;
   --c-scrollbar: #111;
   --c-scrollbar-hover: #222;
+
+  /* text */
   --c-text-color: #f1f1f1;
   --c-sub-text-color: #a7a7a7;
+
+  /* icon-item */
   --c-item-bg: #404040;
-  --c-border-color: #333333;
+
+  /* border */
+  --c-border-color: #706e6e;
+
+  /* modal */
+  --c-modal-bg: #101010;
+
+  /* select */
+  --c-select-hover: #666;
 }
 
 ::selection {
@@ -72,4 +95,28 @@ html.dark {
 /* box-sizing */
 div, main, footer, header {
   box-sizing: border-box;
+}
+
+/* network-loading */
+.network-loading {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: '';
+    width: 20%;
+    height: 1px;
+    left: 0%;
+    bottom: 0;
+    background-color: var(--c-loading);
+    animation: moveLeft 0.5s ease-in infinite;
+  }
+}
+
+@keyframes moveLeft {
+  0% {
+    margin-left: 0%;
+  }
+  100% {
+    margin-left: 100%;
+  }
 }

@@ -1,5 +1,11 @@
 <script setup>
-  import { toggleDark } from "@/logics/index";
+  import { toggleDark } from "@/logics/theme";
+  
+  const emit = defineEmits(["settingClick"])
+
+  function settingClick() {
+    emit('settingClick')
+  }
 </script>
 
 <template>
@@ -18,7 +24,7 @@
         </div>
       </div>
       <div class="right flex">
-        <icon-item>
+        <icon-item @click="settingClick">
           <div class="i-carbon-settings cursor-pointer"></div>
         </icon-item>
         <icon-item class="ml-1">

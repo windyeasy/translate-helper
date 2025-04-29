@@ -7,7 +7,7 @@ class AppCoreByNeu extends EasyEventBus {
   constructor(Neu) {
     super()
     this.native = Neu;
-    this._extension = "js.neutralino.hotkeybynode"; // handle hotkey by the extension of node 
+    this._extension = "js.neutralino.nodeext"; // handle hotkey by the extension of node 
     this._middlewareTasks = [];
     this.windowState = "show"; // hide or show
     this.isTranslate = false
@@ -50,7 +50,7 @@ class AppCoreByNeu extends EasyEventBus {
     };
 
     this.setTray(tray);
-    this.events("trayMenuItemClicked", (event) => {
+    this.neuEventOn("trayMenuItemClicked", (event) => {
       switch (event.detail.id) {
         case "QUIT":
           this.exit();
@@ -66,7 +66,7 @@ class AppCoreByNeu extends EasyEventBus {
    * Listen for close window button click
    */
   handleWindowClose() {
-    this.events("windowClose", () => {
+    this.neuEventOn("windowClose", () => {
       this.hide();
     });
   }
@@ -145,7 +145,7 @@ class AppCoreByNeu extends EasyEventBus {
   listenerGlobalKeyword(cb) {
     if (typeof cb !== "function") new TypeError("cb must be a function");
 
-    this.events("globalKeyboard", (event) => {
+    this.neuEventOn("globalKeyboard", (event) => {
       const { e, down } = JSON.parse(event.detail);
       cb(e, down);
     });
@@ -153,7 +153,6 @@ class AppCoreByNeu extends EasyEventBus {
 
   changeWindowState() {
     this.windowState = this.windowState === "show" ? "hide" : "show";
-    console.log("")
     if (this.windowState === "show") {
       this.activeWindow();
     } else {
@@ -231,7 +230,7 @@ class AppCoreByNeu extends EasyEventBus {
    * @param {String} eventName
    * @param {Function} callback
    */
-  events(eventName, callback) {
+  neuEventOn(eventName, callback) {
     this.native.events.on(eventName, callback);
   }
 
@@ -254,6 +253,44 @@ class AppCoreByNeu extends EasyEventBus {
     setTimeout(() => {
       this.native.window.setAlwaysOnTop(false);
     }, 300);
+  }
+
+  // translateAll
+  translateAll(text, from = 'auto', languages) {
+    this.disExtension('translateAllToExt', {
+      text,
+      from,
+      languages
+    })
+    return new Promise((resolve, reject) => {
+      this.neuEventOn('translateAllFromExt', (event) => {
+        const data = event.detail;
+        if (data.type === 'success') {
+          resolve(data.result)
+        } else {
+          reject(data.error)
+        }
+      })
+    })
+  }
+  // translate
+  translate(text, from = 'auto', to) {
+    this.disExtension('translateToExt', {
+      text,
+      from,
+      to
+    })
+    return new Promise((resolve, reject) => {
+      this.neuEventOn('translateFromExt', (event) => {
+        const data = event.detail
+
+        if (data.type === 'success') {
+          resolve(data.result)
+        } else {
+          reject(data.error)
+        }
+      })
+    })
   }
 }
 

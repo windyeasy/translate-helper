@@ -24,8 +24,9 @@
   "modes": {
     "window": {
       "title": "TranlateHelper",
-      "maxWidth": 900,  
-      "maxHeight": 700,
+      "width": 900,
+      "height": 700,
+      
       "center": true,
       "fullScreen": false,
       "alwaysOnTop": false,
@@ -52,10 +53,12 @@
     }
   },
   "enableExtensions": true,
-  "extensions": [{
-    "id": "js.neutralino.hotkeybynode",
-    "commandLinux": "node ${NL_PATH}/extensions/hotkey/main.js --linux",
-    "commandDarwin": "node ${NL_PATH}/extensions/hotkey/main.js --darwin",
-    "commandWindows": "node ${NL_PATH}/extensions/hotkey/main.js --windows"
-  }]
+  "extensions": [
+    {
+      "id": "js.neutralino.nodeext",
+      "commandLinux": "node ${NL_PATH}/extensions/node-extensions/lib/index.js --linux",
+      "commandDarwin": "node ${NL_PATH}/extensions/node-extensions/lib/index.js --darwin",
+      "commandWindows": "node ${NL_PATH}/extensions/node-extensions/lib/index.js --windows"
+    }
+  ]
 }

@@ -20,6 +20,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/icons/svg-icon.vue')['default']
+    WdSelect: typeof import('./src/components/wd-select.vue')['default']
     WordList: typeof import('./src/components/word-list.vue')['default']
     WordResult: typeof import('./src/components/word-result.vue')['default']
   }

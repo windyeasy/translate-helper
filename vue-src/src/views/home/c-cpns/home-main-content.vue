@@ -1,18 +1,35 @@
 <script setup>
+import WordList from '@/components/word-list.vue'
+import WordResult from '@/components/word-result.vue'
+
+const props = defineProps({
+  wordList: {
+    type: Array,
+    default: () => []
+  }
+})
+
+const currentIndex = ref(0)
+function handleToggle(index) {
+  currentIndex.value = index
+}
+
 
 </script>
 
 <template>
   <div class="home-main-content flex-1 flex justify-center items-center ">
-    <div class="main-content-inner w-full flex">
+    <div class="main-content-inner w-full flex" v-if="wordList.length">
       <div class="inner-left p-3">
-        <word-list />
+        <word-list :list="wordList" 
+          :currentIndex="currentIndex" 
+          @toggle="handleToggle" />
       </div>
       <div class="inner-right">
-        <word-result />
+        <word-result :translateResult="wordList[currentIndex]" />
       </div>
     </div>
-    <!-- <no-results /> -->
+    <no-results v-else />
   </div>
 </template>
 
