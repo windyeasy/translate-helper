@@ -8,6 +8,7 @@ import directives from './directives'
 
 import "normalize.css"
 import 'virtual:uno.css'
+import "vue-select/dist/vue-select.css";
 import "./styles/main.css"
 
 const app = createApp(App)

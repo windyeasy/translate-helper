@@ -19,7 +19,8 @@
     "window.*",
     "debug.log",
     "clipboard.*",
-    "extensions.*"
+    "extensions.*",
+    "filesystem.*"
   ],
   "modes": {
     "window": {

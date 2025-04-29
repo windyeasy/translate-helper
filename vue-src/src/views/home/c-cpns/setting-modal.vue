@@ -1,11 +1,40 @@
 <script setup>
-const show = ref(false)
+import useSettingStore from '@/stores/setting';
+import { useNeuApp } from "@/neu-app-core";
+import { storeToRefs } from 'pinia';
 
 defineExpose({
   openShow(){
     show.value = true
   }
 })
+const show = ref(false)
+
+const settingStore = useSettingStore()
+
+const {targetLanguages} = storeToRefs(settingStore) 
+
+function addLangItem(){
+ settingStore.addTargetLanguage({
+  code: '',
+  name: ''
+ })
+}
+
+
+function handleRemove(index){
+  settingStore.removeTargetLanguage(index)
+}
+
+function handleChangeModelValue(value, index){
+  settingStore.changeTargetLanguage(index, value)
+}
+
+const neuApp = useNeuApp()
+function closeModal(){
+  settingStore.saveSetting(neuApp)
+  show.value = false
+}
 </script>
 
 <template>
@@ -14,15 +43,28 @@ defineExpose({
     <div class="setting-modal-wrapper">
       <div class="modal-header ">
         setting
-        <div class="close-icon" @click="show = false">
-          <svg-icon name="close" class="icon-btn"></svg-icon>
+        <div class="i-carbon-close-large cursor-pointer close-icon" @click="closeModal">
         </div>
       </div>
       <div class="modal-content p-3">
         <div class="modal-item">
           <div class="item-title font-bold font-[18px]">Languages</div>
           <div class="item-content w-[300px] pl-3">
-            <wd-select label="Language1"></wd-select>
+            <div class="select-list-wrap">
+              <div 
+                class="select-item flex items-center" 
+                v-for="(item, index) in targetLanguages" :key="index"
+              >
+                <select-lang 
+                  :label="`language${index + 1}`"
+                  :code="item.code" 
+                  @change="handleChangeModelValue($event, index)"
+                  class="flex-1"
+                  @remove="handleRemove(index)"
+                ></select-lang>
+              </div>
+            </div>
+            <button class="mt-3 w-full cursor-pointer add-lang-btn" @click="addLangItem">Add</button>
           </div>
         </div>
       </div>
@@ -33,6 +75,7 @@ defineExpose({
 <style lang="scss" scoped>
 .mask {
   position: fixed;
+  
   left: 0;
   top: 0;
   width: 100%;
@@ -50,11 +93,11 @@ defineExpose({
   .close-icon {
     position: absolute;
     right: 15px;
-    font-size: 12px;
+    font-size: 24px;
     top: 50%;
     transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
+    width: 24px;
+    height: 24px;
     color: var(--c-sub-text-color);
     line-height: 1;
   }
@@ -71,6 +114,15 @@ defineExpose({
   z-index: 10;
   border: 1px solid var(--c-border-color);
   border-radius: 6px;
+}
 
+
+
+.add-lang-btn {
+  height: 35px;
+  color: var(--c-text-color);
+  border: 1px solid var(--c-sub-text-color);
+  border-radius: 4px;
+  background-color: var(--c-modal-bg);
 }
 </style>

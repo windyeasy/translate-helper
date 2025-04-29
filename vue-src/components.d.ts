@@ -19,8 +19,10 @@ declare module 'vue' {
     NoResults: typeof import('./src/components/no-results.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectLang: typeof import('./src/components/select-lang.vue')['default']
+    SelectLangs: typeof import('./src/components/select-lang.vue')['default']
     SvgIcon: typeof import('./src/components/icons/svg-icon.vue')['default']
-    WdSelect: typeof import('./src/components/wd-select.vue')['default']
+    WdSelect: typeof import('./src/components/select-lang.vue')['default']
     WordList: typeof import('./src/components/word-list.vue')['default']
     WordResult: typeof import('./src/components/word-result.vue')['default']
   }

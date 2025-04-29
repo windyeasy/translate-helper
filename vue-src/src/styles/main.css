@@ -19,9 +19,27 @@
 
   /* select */
   --c-select-hover: #f5f7fa;
+ 
 
   /* loading */
   --c-loading: #9a9a9a;
+
+  /* vue-select */
+  --vs-controls-color: var(--c-item-bg);
+  --vs-border-color: var(--c-border-color);
+
+  --vs-dropdown-bg: var(--c-bg);
+  --vs-dropdown-color: var(--c-text-color);
+  --vs-dropdown-option-color: var(--c-text-color);
+
+  --vs-selected-bg: var(--c-select-hover);
+  --vs-selected-color: var(--c-text-color);
+
+  --vs-search-input-color: var(--c-sub-text-color);
+
+  --vs-dropdown-option--active-bg: var(--c-select-hover);
+  --vs-dropdown-option--active-color: var(--c-text-color);
+  --vs-font-size: 14px;
 }
 
 html {
@@ -54,10 +72,12 @@ html.dark {
   --c-border-color: #706e6e;
 
   /* modal */
-  --c-modal-bg: #101010;
+  --c-modal-bg: #202020;
 
   /* select */
   --c-select-hover: #666;
+  --c-select-active: #f5f7fa;
+  --c-select-placeholder: #999;
 }
 
 ::selection {

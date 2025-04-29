@@ -22,7 +22,7 @@ class AppCoreByNeu extends EasyEventBus {
    */
   init(config) {
     this._config = config;
-  
+    this.settingPath = `${NL_PATH}/resources/setting.json`
     this.toggleHotkey = config.toggleHotkey || ["ctrl", "alt", "h"];
     this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "alt", "f"];
     this.native.init(config.neuConfig || {});
@@ -35,6 +35,8 @@ class AppCoreByNeu extends EasyEventBus {
     // 3. handle hotkey
     this.handleHotkey();
     // 4. 实现开机自启功能, 后面实现
+    this.loadSettingJson();
+
   }
   /**
    * todo: Internationalization
@@ -291,6 +293,21 @@ class AppCoreByNeu extends EasyEventBus {
         }
       })
     })
+  }
+  async loadSettingJson(){
+    try {
+      const json = await this.native.filesystem.readFile(this.settingPath)
+      return JSON.parse(json)
+    }catch (error){
+      console.error(error)
+      await this.native.filesystem.writeFile(this.settingPath, "{}")
+    }
+    return  {}
+  }
+  async saveSettingJson(setting){
+    const defaultSetting = await this.loadSettingJson()
+    const newSetting = Object.assign(defaultSetting, setting)
+    await this.native.filesystem.writeFile(this.settingPath, JSON.stringify(newSetting))
   }
 }
 
