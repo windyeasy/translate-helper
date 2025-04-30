@@ -1,5 +1,7 @@
 import EasyEventBus from "./ease-event-bus";
 
+
+
 class AppCoreByNeu extends EasyEventBus {
   /**
    * @param {Object} Neu Neutralino  
@@ -17,16 +19,15 @@ class AppCoreByNeu extends EasyEventBus {
    * @param {Object} config.trayIcon 
    * @param {Array<string>} config.toggleHotkey  toggle hide or show  window.
    * @param {Array<string>} config.tranlateHotkey click the hotkey to automatically translate the text from the clipboard.
-   * @param {Object} config.neuConfig 
    *   
    */
-  init(config) {
+  async init(config) {
     this._config = config;
-    this.settingPath = `${NL_PATH}/resources/setting.json`
+   
     this.toggleHotkey = config.toggleHotkey || ["ctrl", "alt", "h"];
     this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "alt", "f"];
-    this.native.init(config.neuConfig || {});
-
+    this.native.init();
+    this.settingPath = `${NL_PATH}/setting.json`
     // init task
     // 1. set App tray
     this.setAppTray();
