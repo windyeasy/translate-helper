@@ -27,11 +27,12 @@ function handleTranslateBack(){
     isLoading.value = false
     translateBackResult.value = res
 
-  }).catch(err => {
+  }).catch((err) => {
     isLoading.value = false
+     err = err.toString()
     VsToast.show({
       title: 'Could not translate',
-      message: String(err),
+      message: err,
       variant: 'error',
       showClose: false,
     });
@@ -78,8 +79,8 @@ async function copyText(text) {
       </div>
       <div class="footer-item pt-3  flex justify-between check-translate">
         <div class="item-left">Translate Back</div>
-        <div class="item-right" v-if="translateBackResult.translated">
-          <div class="right-text flex items-center" >
+        <div class="item-right" >
+          <div class="right-text flex items-center" v-if="translateBackResult.translated">
             <template v-if="isSame">
               <div class="i-carbon-checkmark-outline mr-1" />Same
             </template>
@@ -109,9 +110,9 @@ async function copyText(text) {
 
 .check-loading {
   position: relative;
-  width: 30px;
-  height: 30px;
-  border: 2px solid #000;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--c-border-color);
   border-top-color: transparent;
   border-bottom-color: transparent;
   border-radius: 100%;
@@ -119,23 +120,7 @@ async function copyText(text) {
   animation: arrow-circle infinite 0.75s linear;
 }
 
-.check-loading:before,
-.check-loading:after {
-  position: absolute;
-  top: 24px;
-  left: -2px;
-  border-top: 5px solid #000;
-  border-right: 5px solid transparent;
-  border-left: 5px solid transparent;
-  content: "";
-  transform: rotate(-30deg);
-}
-.check-loading:after {
-  top: 0;
-  left: 20.5px;
 
-  transform: rotate(150deg);
-}
 
 @keyframes arrow-circle {
   0% {
