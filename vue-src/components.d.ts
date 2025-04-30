@@ -8,6 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionPanel: typeof import('./src/components/action/action-panel.vue')['default']
+    ActionSection: typeof import('./src/components/action/action-section.vue')['default']
     CustomIcons: typeof import('./src/components/icons/svg-icon.vue')['default']
     DefaultIcons: typeof import('./src/components/icons/define-icons.vue')['default']
     DefineIcons: typeof import('./src/components/icons/define-icons.vue')['default']
