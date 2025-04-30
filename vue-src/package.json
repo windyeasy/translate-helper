@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@neutralinojs/lib": "^6.0.0",
+    "@vuesimple/vs-toast": "^3.0.9",
     "@vueuse/core": "^13.1.0",
     "normalize.css": "^8.0.1",
     "pinia": "^3.0.2",

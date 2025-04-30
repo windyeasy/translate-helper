@@ -3,6 +3,8 @@
   import HomeMainHeader from "./c-cpns/home-main-header.vue";
   import HomeMainContent from "./c-cpns/home-main-content.vue";
   import SettingModal from "./c-cpns/setting-modal.vue";
+  import VsToast from '@vuesimple/vs-toast';
+
   import { useNeuApp } from "@/neu-app-core";
   import useSettingStore from "@/stores/setting";
   import { languagesByCode } from "@/data/languages";
@@ -49,7 +51,12 @@
       })
       .catch((error) => {
         isLoading.value = false;
-        // todo: showToast
+        VsToast.show({
+          title: 'Could not translate',
+          message: String(err),
+          variant: 'error',
+          showClose: false,
+        });
       });
   }
 </script>

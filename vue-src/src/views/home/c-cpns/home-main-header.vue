@@ -1,5 +1,6 @@
 <script setup>
 import debounce from '@/logics/debounce'
+import { useNeuApp } from '@/neu-app-core'
 
 const props = defineProps({
   isLoading: {
@@ -24,6 +25,13 @@ function handleChangeKeyword(e) {
   keyword.value = e.target.value
   debounceSearch() 
 }
+
+const neuApp = useNeuApp()
+neuApp.on("neuTranslateByHotkey", async (value) => {
+  if (!value) return
+  keyword.value = value
+  debounceSearch()
+})
 
 </script>
 

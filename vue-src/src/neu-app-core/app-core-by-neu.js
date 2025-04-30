@@ -138,10 +138,14 @@ class AppCoreByNeu extends EasyEventBus {
     );
 
     // 2. translate by hotkey
-    this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.tranlateHotkey, () => {
-      this.windowState === 'hide' && this.changeWindowState()
+    this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.tranlateHotkey, async() => {
+      console.log("translate test")
+      if (this.windowState === 'hide')
+        this.windowState = 'show' 
+      this.activeWindow()
       // emit translate event
-      this.emit("neuTranslate")
+      const value = await this.clipboardReadText()
+      this.emit("neuTranslateByHotkey", value)
     }))
   }
   listenerGlobalKeyword(cb) {
@@ -308,6 +312,16 @@ class AppCoreByNeu extends EasyEventBus {
     const defaultSetting = await this.loadSettingJson()
     const newSetting = Object.assign(defaultSetting, setting)
     await this.native.filesystem.writeFile(this.settingPath, JSON.stringify(newSetting))
+  }
+
+  /**
+   *  clipboard
+   */ 
+  async clipboardReadText() {
+    return await this.native.clipboard.readText()
+  }
+  async clipboardWriteText(text) {
+    return await this.native.clipboard.writeText(text)
   }
 }
 

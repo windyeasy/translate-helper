@@ -79,6 +79,10 @@ html.dark {
   --c-select-active: #f5f7fa;
   --c-select-placeholder: #999;
 }
+html body .vs-alert--toast  {
+  background-color: var(--c-bg);
+  border: solid 1px var(--c-border-color);
+}
 
 ::selection {
   background: #8884;

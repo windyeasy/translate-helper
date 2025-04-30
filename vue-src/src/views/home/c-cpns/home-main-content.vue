@@ -14,7 +14,6 @@ function handleToggle(index) {
   currentIndex.value = index
 }
 
-
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup>
 import { getLanguageName } from "@/data/languages.js"
 import {useNeuApp} from "@/neu-app-core";
+import VsToast from '@vuesimple/vs-toast';
 
 const props = defineProps({
   translateResult: {
@@ -28,7 +29,12 @@ function handleTranslateBack(){
 
   }).catch(err => {
     isLoading.value = false
-    // todo: showToast
+    VsToast.show({
+      title: 'Could not translate',
+      message: String(err),
+      variant: 'error',
+      showClose: false,
+    });
   })
 }
 
@@ -38,12 +44,26 @@ watchEffect(()  => {
   }
 })
 
+async function copyText(text) {
+  await neuApp.clipboardWriteText(text)
+ 
+  VsToast.show({
+    title: 'copied',
+    variant: 'success',
+    showClose: false,
+  });
+}
 </script>
 
 <template>
   <div class="word-result flex flex-col h-full">
     <main class="word-result-main p-3 font-size-[18px] flex-1">
-      <div class="translated pt-2 pb-4">{{ translateResult.translated }}</div>
+      <div class="translated relative pt-2 pb-4 pr-[40px]">
+        {{ translateResult.translated }}
+        <icon-item class="copy-button w-[30px] absolute right-0 top-0" @click="copyText(translateResult.translated)">
+          <div class="i-carbon-copy"></div>
+        </icon-item>
+      </div>
       <div class="translate-back pt-3" v-if="translateBackResult.translated && !isSame">{{ translateBackResult.translated }}</div>
     </main>
 
@@ -75,6 +95,7 @@ watchEffect(()  => {
 </template>
 
 <style lang="scss" scoped>
+
 .translate-back {
   border-top: 1px solid var(--c-border-color);
 }
