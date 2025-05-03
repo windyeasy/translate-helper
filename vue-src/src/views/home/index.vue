@@ -26,7 +26,10 @@
   const langReg = new RegExp(`[>:/](${Object.keys(languagesByCode).join("|")})$`,"i");
 
   const fromLang = ref("auto");
+  const searchKeyword = ref("");
   function handleTranslate(value) {
+    isLoading.value = false;
+    searchKeyword.value = value;
     if (!value) {
       wordList.value = [];
       return;
@@ -55,7 +58,12 @@
     neuApp
       .translateAll(sourceText, fromLang.value, targetLangs.value)
       .then((res) => {
+
         isLoading.value = false;
+        if (!searchKeyword.value){
+          wordList.value = []
+          return
+        }
         wordList.value = res;
       })
       .catch((error) => {
