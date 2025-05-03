@@ -24,6 +24,9 @@
   /* loading */
   --c-loading: #9a9a9a;
 
+  /* action-section */
+  --c-as-active-bg: #f5f7fa;
+
   /* vue-select */
   --vs-controls-color: var(--c-item-bg);
   --vs-border-color: var(--c-border-color);
@@ -72,12 +75,15 @@ html.dark {
   --c-border-color: #706e6e;
 
   /* modal */
-  --c-modal-bg: #202020;
+  --c-modal-bg: rgba(30,30,30);
 
   /* select */
   --c-select-hover: #666;
   --c-select-active: #f5f7fa;
   --c-select-placeholder: #999;
+
+  /* action-section */
+  --c-as-active-bg: #2e2e2e;
 }
 html body .vs-alert--toast  {
   background-color: var(--c-bg);

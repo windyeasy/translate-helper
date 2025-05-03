@@ -59,6 +59,8 @@
         });
       });
   }
+
+
 </script>
 
 <template>
@@ -69,6 +71,7 @@
     </main>
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
+ 
   </div>
 </template>
 

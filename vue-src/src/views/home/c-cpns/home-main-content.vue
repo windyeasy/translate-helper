@@ -1,6 +1,7 @@
 <script setup>
 import WordList from '@/components/word-list.vue'
 import WordResult from '@/components/word-result.vue'
+import { useNeuApp } from '@/neu-app-core'
 
 const props = defineProps({
   wordList: {
@@ -14,6 +15,19 @@ function handleToggle(index) {
   currentIndex.value = index
 }
 
+const currentTranslated = computed(() => {
+  return props.wordList[currentIndex.value]
+})
+
+// action
+const neuApp = useNeuApp()
+function handleOpenInGoogleTranslate(){
+  const item = currentTranslated.value
+
+  // const url = `https://translate.google.com/?sl=${item.from}&tl=${item.to}&text=${encodeURIComponent(item.original)}&op=translate`
+  // console.log()
+  neuApp.native.os.open("https://www.baidu.com");
+}
 </script>
 
 <template>
@@ -29,6 +43,30 @@ function handleToggle(index) {
       </div>
     </div>
     <no-results v-else />
+    <ActionPanel>
+        <ActionSection title="Open in Google Translate" @click="handleOpenInGoogleTranslate">
+          <template #right>
+            <div 
+              class="right-icon ml-1" 
+            >
+              <icon-item>
+                <svg-icon name="enter" />
+              </icon-item>
+            </div>
+          </template>
+        </ActionSection>
+        <ActionSection title="Open in Google Translate" @click="handleSectionClick(1)">
+          <template #right>
+            <div 
+              class="right-icon ml-1" 
+            >
+              <icon-item>
+                <svg-icon name="enter" />
+              </icon-item>
+            </div>
+          </template>
+        </ActionSection>
+    </ActionPanel>
   </div>
 </template>
 
