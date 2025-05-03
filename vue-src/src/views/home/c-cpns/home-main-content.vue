@@ -43,7 +43,7 @@ function handleOpenInGoogleTranslate(){
       </div>
     </div>
     <no-results v-else />
-    <ActionPanel>
+    <!-- <ActionPanel>
         <ActionSection title="Open in Google Translate" @click="handleOpenInGoogleTranslate">
           <template #right>
             <div 
@@ -66,7 +66,7 @@ function handleOpenInGoogleTranslate(){
             </div>
           </template>
         </ActionSection>
-    </ActionPanel>
+    </ActionPanel> -->
   </div>
 </template>
 
