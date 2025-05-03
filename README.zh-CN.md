@@ -20,16 +20,26 @@
 
 ## 运行
 
+- 使用node 16.0及以上的版本
+
 ```sh
 npm install @neutralinojs/neu -g
 
 neu update
 # 安装extensions依赖
-cd ./extensions/hotkey
-pnpm install 
+cd ./extensions/node-extensions
+npm install 
+
+cd ../vue-src
+pnpm install
+
 cd ../..
 neu run
 ```
+
+### 注意
+
+- 一些功能`Neutralinojs`不支持，可以扩展并使用`node`实现，由于`neutralinojs`打包会将`node`的`node_modules`打包进`neutralinojs`中，使用`pnpm`不能使用，需要重新安装依赖，所以切换为npm安装node的依赖。
 
 ## build
 
@@ -39,4 +49,4 @@ neu build
 
 ## License
 
-It is MIT.
+It is [MIT](./LICENSE).
