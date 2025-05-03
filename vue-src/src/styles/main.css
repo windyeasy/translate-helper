@@ -90,11 +90,13 @@ html body .vs-alert--toast  {
   border: solid 1px var(--c-border-color);
 }
 
+.vs-alert {
+  color: var(--c-text-color)!important;
+}
+
 ::selection {
   background: #8884;
 }
-
-
 
 * {
   scrollbar-color: var(--c-scrollbar) var(--c-bg);

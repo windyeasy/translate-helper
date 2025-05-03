@@ -31,6 +31,14 @@
       wordList.value = [];
       return;
     }
+    if (targetLangs.value.length === 0){
+        VsToast.show({
+          title: 'Please set the target language first',
+          message: 'click the setting button',
+          variant: 'warning',
+        });
+        return  
+    }
     isLoading.value = true;
 
     const sourceText = value.replace(langReg, (_, lang) => {
@@ -43,6 +51,7 @@
     if (value === sourceText && fromLang.value !== "auto"){
       fromLang.value = "auto"
     }
+
     neuApp
       .translateAll(sourceText, fromLang.value, targetLangs.value)
       .then((res) => {
@@ -71,7 +80,6 @@
     </main>
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
- 
   </div>
 </template>
 
