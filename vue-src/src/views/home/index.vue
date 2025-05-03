@@ -62,7 +62,7 @@
         isLoading.value = false;
         VsToast.show({
           title: 'Could not translate',
-          message: String(err),
+          message: String(error),
           variant: 'error',
           showClose: false,
         });
