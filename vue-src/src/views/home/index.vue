@@ -27,6 +27,9 @@
 
   const fromLang = ref("auto");
   const searchKeyword = ref("");
+
+  let lastRequestId = 0;
+  // clear value, async data back, have a bug
   function handleTranslate(value) {
     isLoading.value = false;
     searchKeyword.value = value;
@@ -54,20 +57,22 @@
     if (value === sourceText && fromLang.value !== "auto"){
       fromLang.value = "auto"
     }
-
+    const requestId = ++lastRequestId
     neuApp
       .translateAll(sourceText, fromLang.value, targetLangs.value)
       .then((res) => {
-
-        isLoading.value = false;
-        if (!searchKeyword.value){
-          wordList.value = []
-          return
+        if (requestId === lastRequestId){
+          wordList.value = res;
+          isLoading.value = false;
         }
-        wordList.value = res;
+        if (!searchKeyword.value){
+            wordList.value = []
+        }
       })
       .catch((error) => {
-        isLoading.value = false;
+        if (requestId === lastRequestId){
+          isLoading.value = false;
+        }
         VsToast.show({
           title: 'Could not translate',
           message: String(error),

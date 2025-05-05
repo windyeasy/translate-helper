@@ -1,6 +1,6 @@
 import EasyEventBus from "./ease-event-bus";
 
-
+import TranslatorByNeuApp from "./translator";
 
 class AppCoreByNeu extends EasyEventBus {
   /**
@@ -9,10 +9,9 @@ class AppCoreByNeu extends EasyEventBus {
   constructor(Neu) {
     super()
     this.native = Neu;
+    this.translator = new TranslatorByNeuApp(this)
     this._extension = "js.neutralino.nodeext"; // handle hotkey by the extension of node 
-    this._middlewareTasks = [];
     this.windowState = "show"; // hide or show
-    this.isTranslate = false
   }
   /**
    * @param {Object} config 
@@ -27,6 +26,7 @@ class AppCoreByNeu extends EasyEventBus {
     this.toggleHotkey = config.toggleHotkey || ["ctrl", "alt", "h"];
     this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "alt", "f"];
     this.native.init();
+    this.translator.init()
     this.settingPath = `${NL_PATH}/setting.json`
     // init task
     // 1. set App tray
@@ -176,36 +176,6 @@ class AppCoreByNeu extends EasyEventBus {
     );
   }
   /**
-   * Use the given middleware `fn`.
-   *
-   * @param {(context: Context) =>  Promise<any | void> | undefined} fn
-   * @return {AppCoreByNeu} self
-   * @api public
-   */
-  use(fn) {
-    if (typeof fn !== "function")
-      throw new TypeError("middleware must be a function");
-    this._middlewareTasks.push(fn);
-
-    return this;
-  }
-
-  /**
-   * Execute the tasks of middleware
-   *
-   * @api public
-   */
-  execTasks(index = 0) {
-    if (!this._middlewareTasks.length || !this._middlewareTasks[index]) return;
-
-    const task = this._middlewareTasks[index];
-    const nextTask = () => {
-      this.execTasks(index + 1);
-    };
-
-    task(this, nextTask);
-  }
-  /**
    * exit app
    */
   exit() {
@@ -230,7 +200,6 @@ class AppCoreByNeu extends EasyEventBus {
   hide() {
     this.native.window.hide();
   }
-
   /**
    * Listen to events from Neutralino
    *
@@ -240,6 +209,7 @@ class AppCoreByNeu extends EasyEventBus {
   neuEventOn(eventName, callback) {
     this.native.events.on(eventName, callback);
   }
+
 
   async activeWindow() {
     // 确保窗口可见
@@ -261,44 +231,9 @@ class AppCoreByNeu extends EasyEventBus {
       this.native.window.setAlwaysOnTop(false);
     }, 300);
   }
-
-  // translateAll
-  translateAll(text, from = 'auto', languages) {
-    this.disExtension('translateAllToExt', {
-      text,
-      from,
-      languages
-    })
-    return new Promise((resolve, reject) => {
-      this.neuEventOn('translateAllFromExt', (event) => {
-        const data = event.detail;
-        if (data.type === 'success') {
-          resolve(data.result)
-        } else {
-          reject(data.error)
-        }
-      })
-    })
-  }
-  // translate
-  translate(text, from = 'auto', to) {
-    this.disExtension('translateToExt', {
-      text,
-      from,
-      to
-    })
-    return new Promise((resolve, reject) => {
-      this.neuEventOn('translateFromExt', (event) => {
-        const data = event.detail
-
-        if (data.type === 'success') {
-          resolve(data.result)
-        } else {
-          reject(data.error)
-        }
-      })
-    })
-  }
+  /* 
+   * handle setting
+   */ 
   async loadSettingJson(){
     try {
       const json = await this.native.filesystem.readFile(this.settingPath)
@@ -323,6 +258,16 @@ class AppCoreByNeu extends EasyEventBus {
   }
   async clipboardWriteText(text) {
     return await this.native.clipboard.writeText(text)
+  }
+
+  /**
+   * translate
+   */
+  translateAll(text, from = 'auto', languages) {
+    return this.translator.translateAll(text, from, languages);
+  }
+  translate(text, from = 'auto', to) {
+    return this.translator.translate(text, from, to);
   }
 }
 

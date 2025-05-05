@@ -1,7 +1,6 @@
 const googleTranslate = require('@iamtraction/google-translate')
 const { LRUCache } = require('lru-cache')
 
-
 const cache = new LRUCache({
   max: 1000,
 })
@@ -84,41 +83,48 @@ async function handleExtTranslate(neuExt){
     const {event, data} = JSON.parse(e.data)
     if (!data) return
     if (event === 'translateAllToExt'){
+      const {text, from, languages, requestId} = data
       try {
-        const {text, from, languages} = data
-     
+      
         const result = await translateAll(text, from, languages)
+    
+      
         neuExt.dispatch('translateAllFromExt', {
             type: 'success',
-            result
+            result, 
+            requestId
           })
       } catch (error) {
-        console.error('translateAllToExt error:', error)
+        console.log('translateAllToExt error:', error)
 
         neuExt.dispatch('translateAllFromExt', {
           type: 'error',
-          error
+          error,
+          requestId
         })
       }
     }
 
     // handle translate from ext
     if (event === 'translateToExt'){
+      const {text, from, to, requestId} = data
        try {
     
-        const {text, from, to} = data
+       
         const result = await translate(text, from, to)
       
         neuExt.dispatch('translateFromExt', {
           type: 'success',
-          result
+          result,
+          requestId
         })
       } catch (error) {
         console.error('translateToExt error:', error)
         neuExt.dispatch('translateFromExt', 
           {
             type: 'error',
-            error: String(error)
+            error: String(error),
+            requestId
           }
         )
       }
