@@ -10,6 +10,7 @@ class TranslatorByNeuApp {
   handleOn(eventName){
     this.neuApp.neuEventOn(eventName, async (event) => {
       const { requestId } = event.detail
+
       const pendingTask = this.pendingRequests.get(requestId)
       if (pendingTask) {
         pendingTask(event.detail)
@@ -28,6 +29,13 @@ class TranslatorByNeuApp {
       if (data.type === 'success') {
         resolve(data.result)                                  
       } else {
+        if (typeof data.error !== 'string'){
+          if (data.error.name && typeof data.error.name === 'string'){
+            reject(data.error.name)
+          }else {
+            reject('Unknown Error')
+          }
+        }
         reject(data.error)
       }
     }

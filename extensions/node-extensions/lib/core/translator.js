@@ -95,8 +95,6 @@ async function handleExtTranslate(neuExt){
             requestId
           })
       } catch (error) {
-        console.log('translateAllToExt error:', error)
-
         neuExt.dispatch('translateAllFromExt', {
           type: 'error',
           error,
@@ -109,7 +107,6 @@ async function handleExtTranslate(neuExt){
     if (event === 'translateToExt'){
       const {text, from, to, requestId} = data
        try {
-    
        
         const result = await translate(text, from, to)
       
@@ -119,7 +116,6 @@ async function handleExtTranslate(neuExt){
           requestId
         })
       } catch (error) {
-        console.error('translateToExt error:', error)
         neuExt.dispatch('translateFromExt', 
           {
             type: 'error',
