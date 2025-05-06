@@ -65,7 +65,7 @@ async function copyText(text) {
           <div class="i-carbon-copy"></div>
         </icon-item>
       </div>
-      <div class="translate-back pt-3" v-if="translateBackResult.translated && !isSame">{{ translateBackResult.translated }}</div>
+      <div class="translate-back pt-3" v-if="translateBackResult.translated && !isSame && !isLoading">{{ translateBackResult.translated }}</div>
     </main>
 
     <footer class="word-result-footer p-3 h-[40%]">
@@ -80,7 +80,7 @@ async function copyText(text) {
       <div class="footer-item pt-3  flex justify-between check-translate">
         <div class="item-left">Translate Back</div>
         <div class="item-right" >
-          <div class="right-text flex items-center" v-if="translateBackResult.translated">
+          <div class="right-text flex items-center" v-if="translateBackResult.translated && !isLoading">
             <template v-if="isSame">
               <div class="i-carbon-checkmark-outline mr-1" />Same
             </template>
