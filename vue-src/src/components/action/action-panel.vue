@@ -1,60 +1,34 @@
 <script setup>
-const show = ref(false)
+defineProps({
+  title: {
+    type: String,
+    default: ''
+  }
+})
 </script>
 
 <template>
-  <div class="action-panel flex flex-col">
-    <div class="title px-3 py-4">TH-Action</div>
-    <div class="action-list px-3 flex-1"> 
-      <slot></slot>
-    </div>
-    <div class="panel-footer px-3 py-4">
-      <input autofocus type="text" placeholder="Search for action..." class="search-action-inp" plasholder="Search for action...">
-    </div>
-  </div>
+  <Teleport to="#action-list">
+    <div class="action-panel py-3">
+      <div class="panel-title px-3 pt-2 pb-3" v-show="title">{{ title  }}</div>
+      <div class="panel-content">
+        <slot></slot>
+      </div>
+    </div>    
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>
 .action-panel {
-  position: fixed;
-  width: 500px;
-  height: 360px;
-  overflow-y: auto;
-  border: 1px solid var(--c-border-color);
-  background-color: var(--c-modal-bg);
-  border-radius: 8px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  .title {
+  border-bottom: 1px solid var(--c-border-color);
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .panel-title {
     font-size: 18px;
     font-weight: 600;
     color: var(--c-sub-text-color);
-  }
-
-  .action-list {
-    overflow-y: auto;
-  }
-  .panel-footer {
-    border-top: 1px solid var(--c-border-color);
-    position: absolute;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    background-color: var(--c-modal-bg);
-    .search-action-inp {
-      border: none;
-      outline: none;
-      background-color: var(--c-modal-bg);
-      width: 100%;
-      color: var(--c-text-color);
-      font-size: 16px;
-      &:hover {
-        border: none;
-        outline: none;
-      }
-    }
   }
 }
 </style>

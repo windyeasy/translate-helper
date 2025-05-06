@@ -1,16 +1,21 @@
 <script setup>
-defineProps({
+import useActionStore from '@/stores/action';
+
+const props = defineProps({
   title: {
     type: String,
     default: ''
   },
-  active: {
-    type: Boolean,
-    default: false
-  }
+ 
 })
 
+const actionStore = useActionStore();
+actionStore.addSectionTitles(props.title)
 
+const active = computed(() => {
+  const index = actionStore.currentIndex
+  return actionStore.sectionTitles[index] === props.title
+})
 </script>
 
 <template>
@@ -25,7 +30,16 @@ defineProps({
       <div class="title ml-2">{{ title }}</div>
     </div>
     <div class="section-right flex items-center">
-      <slot name="right"></slot>
+      <slot name="right">
+        <template v-if="active">
+          <icon-item>
+            <svg-icon name="enter" />
+          </icon-item>
+        </template>
+        <template v-else>
+          <div class="i-carbon-chevron-right p-[5px]"></div>
+        </template>
+      </slot>
     </div>
   </div>
 </template>
@@ -40,7 +54,7 @@ defineProps({
     font-size: 16px;
   }
   
-  &.active {
+  &:hover, &.active {
     background-color: var(--c-as-active-bg);
     border-radius: 6px;
   }

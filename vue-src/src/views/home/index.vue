@@ -93,6 +93,30 @@
     </main>
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
+    <action-panel title="RAY-4389">
+      <action-section title="Show Detail">
+        <template #icon>
+          <icon-item></icon-item>
+        </template>
+      </action-section>
+      <action-section title="Open Issue in Linear">
+        <template #icon>
+          <icon-item></icon-item>
+        </template>
+      </action-section>
+    </action-panel>
+    <action-panel>
+      <action-section title="Set Status">
+        <template #icon>
+          <icon-item></icon-item>
+        </template>
+      </action-section>
+      <action-section title="Set Priority">
+        <template #icon>
+          <icon-item></icon-item>
+        </template>
+      </action-section>
+    </action-panel>
   </div>
 </template>
 

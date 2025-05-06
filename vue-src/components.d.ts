@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionList: typeof import('./src/components/action/action-list.vue')['default']
+    ActionModal: typeof import('./src/components/action/action-modal.vue')['default']
     ActionPanel: typeof import('./src/components/action/action-panel.vue')['default']
     ActionSection: typeof import('./src/components/action/action-section.vue')['default']
     DefineIcons: typeof import('./src/components/icons/define-icons.vue')['default']
