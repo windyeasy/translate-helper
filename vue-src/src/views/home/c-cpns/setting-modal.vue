@@ -1,7 +1,6 @@
 <script setup>
 import useSettingStore from '@/stores/setting';
 import { useNeuApp } from "@/neu-app-core";
-import { storeToRefs } from 'pinia';
 
 defineExpose({
   openShow(){
@@ -12,10 +11,16 @@ const show = ref(false)
 
 const settingStore = useSettingStore()
 
-const {targetLanguages} = storeToRefs(settingStore) 
+const targetLanguages = ref([])
+
+watchEffect(() => {
+  if (show.value){
+    targetLanguages.value = [...settingStore.targetLanguages]
+  }
+})
 
 function addLangItem(){
- settingStore.addTargetLanguage({
+ targetLanguages.value.push({
   code: '',
   name: ''
  })
@@ -23,17 +28,25 @@ function addLangItem(){
 
 
 function handleRemove(index){
-  settingStore.removeTargetLanguage(index)
+  if (targetLanguages.value[index]) {
+    targetLanguages.value.splice(index, 1);
+  }
 }
 
-function handleChangeModelValue(value, index){
-  settingStore.changeTargetLanguage(index, value)
+function handleChangeModelValue(v, i){
+  if (!targetLanguages.value[i]) return;
+  targetLanguages.value[i].name = v.name;
+  targetLanguages.value[i].code = v.code;
 }
 
 const neuApp = useNeuApp()
 function closeModal(){
-  settingStore.saveSetting(neuApp)
   show.value = false
+}
+
+function handleSaveSetting(){
+  settingStore.saveSetting(neuApp, targetLanguages.value)
+  closeModal()
 }
 </script>
 
@@ -67,6 +80,10 @@ function closeModal(){
             <button class="mt-3 w-full cursor-pointer add-lang-btn" @click="addLangItem">Add</button>
           </div>
         </div>
+      </div>
+      <div class="modal-footer py-3 flex justify-center">
+        <button class="cancel-btn btn-secondary mr-3" @click="closeModal">Cancel</button>
+        <button class="save-btn btn-primary" @click="handleSaveSetting">Save</button>
       </div>
     </div>
   </div>
@@ -121,8 +138,47 @@ function closeModal(){
 .add-lang-btn {
   height: 35px;
   color: var(--c-text-color);
-  border: 1px solid var(--c-sub-text-color);
   border-radius: 4px;
-  background-color: var(--c-modal-bg);
+  background-color: var(--c-primary);
+  color: #fff;
+  border: none;
+  outline: none;
+  &:hover {
+    background-color: #79bbff;
+  }
+}
+
+.modal-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+
+  button {
+    height: 35px;
+    width: 100px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+  }
+  .cancel-btn {
+    background-color: var(--c-modal-bg);
+    border: 1px solid var(--c-border-color);
+    color: var(--c-text-color);
+    &:hover {
+      color: #5c8fc3;
+    }
+  }
+
+  .save-btn {
+    background-color: var(--c-primary);
+    color: #fff;
+    &:hover {
+      background-color: #79bbff;
+    }
+  }
 }
 </style>

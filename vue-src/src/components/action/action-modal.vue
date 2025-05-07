@@ -1,16 +1,15 @@
 <script setup>
-const show = ref(true)
+const show = ref(false)
 </script>
 
 <template>
-  <div class="action-modal flex flex-col">
+  <div class="action-modal flex flex-col" v-show="show">
     <div class="panel-header px-3 py-4">
       <input autofocus type="text" placeholder="Search for action..." class="search-action-inp" plasholder="Search for action...">
     </div>
     <div class="action-list px-3 flex-1" id="action-list"> 
       <slot></slot>
     </div>
-
   </div>
 </template>
 

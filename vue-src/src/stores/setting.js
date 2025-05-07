@@ -8,27 +8,10 @@ const useSettingStore = defineStore("setting", {
     // todo: self-starting
   }),
   actions: {
-    addTargetLanguage(language) {
-      this.targetLanguages.push(language);
-    },
-    changeTargetLanguages(languages) {
-      this.targetLanguages = languages;
-    },
-
-    removeTargetLanguage(index) {
-      if (this.targetLanguages[index]) {
-        this.targetLanguages.splice(index, 1);
-      }
-    },
-    changeTargetLanguage(i, v) {
-      if (!this.targetLanguages[i]) return;
-      this.targetLanguages[i].name = v.name;
-      this.targetLanguages[i].code = v.code;
-    },
-    // todo: save setting to file
-    saveSetting(neuApp) {
+    saveSetting(neuApp, targetLanguages) {
+      this.targetLanguages = [...targetLanguages]
       const setting = {
-        targetLanguages: this.targetLanguages
+        targetLanguages,
       }
       neuApp.saveSettingJson(setting)
     },
