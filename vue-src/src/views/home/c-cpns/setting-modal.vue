@@ -53,13 +53,13 @@ function handleSaveSetting(){
 <template>
   <div class="setting-modal" v-if="show">
     <div class="mask"></div>
-    <div class="setting-modal-wrapper">
+    <div class="setting-modal-wrapper flex flex-col">
       <div class="modal-header ">
         setting
         <div class="i-carbon-close-large cursor-pointer close-icon" @click="closeModal">
         </div>
       </div>
-      <div class="modal-content p-3">
+      <div class="modal-content p-3 flex-1 overflow-y-auto">
         <div class="modal-item">
           <div class="item-title font-bold font-[18px]">Languages</div>
           <div class="item-content w-[300px] pl-3">
@@ -81,9 +81,11 @@ function handleSaveSetting(){
           </div>
         </div>
       </div>
-      <div class="modal-footer py-3 flex justify-center">
-        <button class="cancel-btn btn-secondary mr-3" @click="closeModal">Cancel</button>
-        <button class="save-btn btn-primary" @click="handleSaveSetting">Save</button>
+      <div class="modal-footer h-[80px]">
+        <div class="modal-footer-fixed flex justify-center items-center h-[80px]">
+          <button class="cancel-btn btn-secondary mr-3" @click="closeModal">Cancel</button>
+          <button class="save-btn btn-primary" @click="handleSaveSetting">Save</button>
+        </div>
       </div>
     </div>
   </div>
@@ -149,6 +151,10 @@ function handleSaveSetting(){
 }
 
 .modal-footer {
+  background-color: var(--c-modal-bg);
+}
+
+.modal-footer-fixed {
   position: absolute;
   bottom: 0;
   left: 0;
