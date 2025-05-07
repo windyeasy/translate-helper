@@ -1,6 +1,8 @@
 <script setup>
   import { toggleDark } from "@/logics/theme";
+  import useActionStore from "@/stores/action";
   
+  const { openShow} = useActionStore()
   const emit = defineEmits(["settingClick"])
 
   function settingClick() {
@@ -24,7 +26,16 @@
         </div>
       </div>
       <div class="right flex">
-        <icon-item @click="settingClick">
+        <div class="action-area flex items-center cursor-pointer" @click="openShow">
+          <div class="action-title mr-3">Actions</div>
+          <icon-item class="w-[30px] h-[28px]">
+            <span>Alt</span>
+          </icon-item>
+          <icon-item class="ml-1 w-[30px] h-[28px]">
+            <span>K</span>
+          </icon-item>
+        </div>
+        <icon-item @click="settingClick" >
           <div class="i-carbon-settings cursor-pointer"></div>
         </icon-item>
         <icon-item class="ml-1">
@@ -51,10 +62,10 @@
 
 .footer-right {
 
-
-  .left {
+  .left, .action-area { 
     position: relative;
     padding-right: 30px;
+
     &::after {
       position: absolute;
       content: "";
@@ -64,6 +75,13 @@
       right: 15px;
       top: 50%;
       transform: translateY(-50%);
+    }
+  }
+
+  .action-area {
+    span {
+      line-height: 1;
+      font-size: 14px;
     }
   }
 }

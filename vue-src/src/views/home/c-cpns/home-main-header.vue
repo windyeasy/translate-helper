@@ -1,6 +1,7 @@
 <script setup>
 import debounce from '@/logics/debounce'
 import { useNeuApp } from '@/neu-app-core'
+import VsToast from '@vuesimple/vs-toast';
 
 const props = defineProps({
   isLoading: {
@@ -33,6 +34,17 @@ neuApp.on("neuTranslateByHotkey", async (value) => {
   debounceSearch()
 })
 
+async function handleCopy() {
+  if (keyword.value){
+    console.log(keyword.value)
+    await neuApp.clipboardWriteText(keyword.value)
+    VsToast.show({
+      title: 'copied',
+      variant: 'success',
+      showClose: false,
+    });
+  }
+}
 </script>
 
 <template>
@@ -47,7 +59,8 @@ neuApp.on("neuTranslateByHotkey", async (value) => {
           class="ml-2 flex-1" 
           placeholder="Enter text to translate..." 
           autofocus
-           />
+          @keydown.enter="handleCopy"
+        />
       </div>
     </div>
 </template>

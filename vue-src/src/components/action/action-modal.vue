@@ -1,19 +1,54 @@
 <script setup>
-const show = ref(false)
+import useActionStore from '@/stores/action';
+import { storeToRefs } from 'pinia';
+import debounce from '@/logics/debounce';
+const actionStore = useActionStore()
+
+const {show} = storeToRefs(actionStore)
+
+function handleKeyDown(e) {
+  if (e.altKey && e.key.toUpperCase() === 'k'.toUpperCase()) {
+    e.preventDefault(); // 阻止浏览器默认保存行为
+    actionStore.toggleShow()
+  }
+}
+
+const handleKeyDownDouble = debounce(handleKeyDown, 200)
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeyDownDouble)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDownDouble)
+})
 </script>
 
 <template>
-  <div class="action-modal flex flex-col" v-show="show">
-    <div class="panel-header px-3 py-4">
-      <input autofocus type="text" placeholder="Search for action..." class="search-action-inp" plasholder="Search for action...">
-    </div>
-    <div class="action-list px-3 flex-1" id="action-list"> 
-      <slot></slot>
+  <div class="action-modal-wrapper" v-show="show">
+    <div class="mask" @click="actionStore.hideShow"></div>
+    <div class="action-modal flex flex-col" >
+      <div class="panel-header px-3 py-4">
+        <input autofocus type="text" placeholder="Search for action..." class="search-action-inp" plasholder="Search for action...">
+      </div>
+      <div class="action-list px-3 flex-1" id="action-list"> 
+        <slot></slot>
+      </div>
     </div>
   </div>
+
 </template>
 
 <style lang="scss" scoped>
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 99;
+}
 .action-modal {
   position: fixed;
   width: 500px;
@@ -25,7 +60,7 @@ const show = ref(false)
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 999;
 
 
   .action-list {

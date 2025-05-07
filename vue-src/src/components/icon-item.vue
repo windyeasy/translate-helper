@@ -1,6 +1,6 @@
 
 <template>
-  <div class="icon-item flex items-center">
+  <div class="icon-item flex items-center justify-center">
     <slot></slot>
   </div>
 </template>

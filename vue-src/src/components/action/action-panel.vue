@@ -10,7 +10,7 @@ defineProps({
 <template>
   <Teleport to="#action-list">
     <div class="action-panel py-3">
-      <div class="panel-title px-3 pt-2 pb-3" v-show="title">{{ title  }}</div>
+      <div class="panel-title pt-2 pb-3" v-show="title">{{ title  }}</div>
       <div class="panel-content">
         <slot></slot>
       </div>
@@ -26,7 +26,7 @@ defineProps({
   }
   
   .panel-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--c-sub-text-color);
   }

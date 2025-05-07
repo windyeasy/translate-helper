@@ -269,6 +269,10 @@ class AppCoreByNeu extends EasyEventBus {
   translate(text, from = 'auto', to) {
     return this.translator.translate(text, from, to);
   }
+  // open url by default browser
+  async openInBrowser(url) {
+    await this.native.os.open(url)
+  }
 }
 
 export default AppCoreByNeu;

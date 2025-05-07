@@ -82,6 +82,10 @@
       });
   }
 
+  function openGitHub() {
+    neuApp.openInBrowser("https://github.com/windyeasy/translate-helper");
+  }
+
 
 </script>
 
@@ -93,30 +97,14 @@
     </main>
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
-    <action-panel title="RAY-4389">
-      <action-section title="Show Detail">
+    <action-panel title="About">
+      <action-section title="Open GitHub" @click="openGitHub">
         <template #icon>
-          <icon-item></icon-item>
-        </template>
-      </action-section>
-      <action-section title="Open Issue in Linear">
-        <template #icon>
-          <icon-item></icon-item>
+            <div class="i-carbon:logo-github w-[20px] h-[20px]" />
         </template>
       </action-section>
     </action-panel>
-    <action-panel>
-      <action-section title="Set Status">
-        <template #icon>
-          <icon-item></icon-item>
-        </template>
-      </action-section>
-      <action-section title="Set Priority">
-        <template #icon>
-          <icon-item></icon-item>
-        </template>
-      </action-section>
-    </action-panel>
+    
   </div>
 </template>
 

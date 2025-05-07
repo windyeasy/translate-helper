@@ -27,6 +27,7 @@
 
   /* action-section */
   --c-as-active-bg: #f5f7fa;
+  --c-as-enter-item-bg: #e1dcda;
 
   /* vue-select */
   --vs-controls-color: var(--c-item-bg);
@@ -85,6 +86,7 @@ html.dark {
 
   /* action-section */
   --c-as-active-bg: #2e2e2e;
+  --c-as-enter-item-bg: #666;
 }
 html body .vs-alert--toast  {
   background-color: var(--c-bg);

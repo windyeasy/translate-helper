@@ -32,9 +32,10 @@ const active = computed(() => {
     <div class="section-right flex items-center">
       <slot name="right">
         <template v-if="active">
-          <icon-item>
+          <div class="enter-item">
             <svg-icon name="enter" />
-          </icon-item>
+          </div>
+     
         </template>
         <template v-else>
           <div class="i-carbon-chevron-right p-[5px]"></div>
@@ -47,13 +48,24 @@ const active = computed(() => {
 <style lang="scss" scoped>
 .action-section {
   color: var(--c-text-color);
-  --c-item-bg: #666;
+
   cursor: pointer;
 
   .title {
-    font-size: 16px;
+    font-size: 14px;
   }
-  
+
+  .enter-item {
+    background: var(--c-as-enter-item-bg);
+    border-radius: 3px;
+    cursor: pointer;
+    color: var(--c-text-color);
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &:hover, &.active {
     background-color: var(--c-as-active-bg);
     border-radius: 6px;

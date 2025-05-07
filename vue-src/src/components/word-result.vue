@@ -54,6 +54,15 @@ async function copyText(text) {
     showClose: false,
   });
 }
+
+function openGoogleTranslate() {
+  const item = props.translateResult
+  neuApp.openInBrowser(`https://translate.google.com/?sl=${item.from}&tl=${item.to}&text=${encodeURIComponent(item.original)}&op=translate`);
+}
+function openGoogleSearch() {
+    const item = props.translateResult
+    neuApp.openInBrowser(`https://www.google.com/search?q=${encodeURIComponent(item.original)}`);
+}
 </script>
 
 <template>
@@ -92,6 +101,20 @@ async function copyText(text) {
         </div>
       </div>
     </footer>
+    <template v-if="translateResult.translated">
+      <action-panel title="More info">
+        <action-section title="Open in Google Translate" @click="openGoogleTranslate">
+          <template #icon>
+              <svg-icon name="google-translate" class="w-[20px] h-[20px]" />
+          </template>
+        </action-section>
+        <action-section title="Open in Google Search" @click="openGoogleSearch">
+          <template #icon>
+            <svg-icon name="google" class="w-[20px] h-[20px]" />
+          </template>
+        </action-section>
+      </action-panel>
+    </template>
   </div>
 </template>
 
