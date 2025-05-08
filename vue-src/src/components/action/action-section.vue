@@ -1,12 +1,19 @@
 <script setup>
 import useActionStore from '@/stores/action';
+import { useNeuApp } from "@/neu-app-core";
 
 const props = defineProps({
   title: {
     type: String,
     default: ''
   },
- 
+  action: {
+    type: Object,
+    default: () => ({
+      type: "openInBrowser", // 'openInBrowser'
+      value: '' // 
+    })
+  }
 })
 
 const actionStore = useActionStore();
@@ -16,12 +23,33 @@ const active = computed(() => {
   const index = actionStore.currentIndex
   return actionStore.sectionTitles[index] === props.title
 })
+
+const neuApp = useNeuApp();
+const actionClick = () => {
+  const action = props.action
+  if (action.type === 'openInBrowser'){
+    neuApp.openInBrowser(action.value);
+  }
+}
+
+function handleEnterAction() {
+  if (active.value){
+    actionClick()
+  }
+}
+
+neuApp.on("enterAction", handleEnterAction)
+
+onUnmounted(() => {
+  neuApp.off("enterAction", handleEnterAction)
+})
 </script>
 
 <template>
   <div 
     class="action-section flex justify-between items-center px-2 py-3"
     :class="{active: active}"
+    @click="actionClick"
   >
     <div class="section-left flex items-center">
       <div class="icon">
@@ -35,7 +63,6 @@ const active = computed(() => {
           <div class="enter-item">
             <svg-icon name="enter" />
           </div>
-     
         </template>
         <template v-else>
           <div class="i-carbon-chevron-right p-[5px]"></div>

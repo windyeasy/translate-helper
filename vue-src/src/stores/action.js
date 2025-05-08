@@ -23,9 +23,16 @@ const useActionStore = defineStore("action", {
    toggleShow(){
     this.show = !this.show
    },
+   addCurrentIndex(){
+    const index = this.currentIndex + 1
+    this.currentIndex = index === this.sectionTitles.length ? 0 : index
+   },
+   subCurrentIndex(){
+    const index = this.currentIndex - 1
+    this.currentIndex = index === -1 ? this.sectionTitles.length -1 : index
+   }
    // todo: search, titles search, section.title === titles.findTitle
 
-   // todo: toggle and click, hide and show
   },
 });
 

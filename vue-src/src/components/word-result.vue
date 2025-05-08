@@ -7,8 +7,7 @@ const props = defineProps({
   translateResult: {
     type: Object,
     default: () => ({})
-  },
-
+  }
 })
 
 const neuApp = useNeuApp()
@@ -54,15 +53,6 @@ async function copyText(text) {
     showClose: false,
   });
 }
-
-function openGoogleTranslate() {
-  const item = props.translateResult
-  neuApp.openInBrowser(`https://translate.google.com/?sl=${item.from}&tl=${item.to}&text=${encodeURIComponent(item.original)}&op=translate`);
-}
-function openGoogleSearch() {
-    const item = props.translateResult
-    neuApp.openInBrowser(`https://www.google.com/search?q=${encodeURIComponent(item.original)}`);
-}
 </script>
 
 <template>
@@ -103,12 +93,24 @@ function openGoogleSearch() {
     </footer>
     <template v-if="translateResult.translated">
       <action-panel title="More info">
-        <action-section title="Open in Google Translate" @click="openGoogleTranslate">
+        <action-section 
+          title="Open in Google Translate" 
+          :action="{
+            type: 'openInBrowser',
+            value: `https://translate.google.com/?sl=${translateResult.from}&tl=${translateResult.to}&text=${encodeURIComponent(translateResult.original)}&op=translate`
+          }"
+        >
           <template #icon>
               <svg-icon name="google-translate" class="w-[20px] h-[20px]" />
           </template>
         </action-section>
-        <action-section title="Open in Google Search" @click="openGoogleSearch">
+        <action-section 
+          title="Open in Google Search" 
+          :action="{
+            type: 'openInBrowser',
+            value: `https://www.google.com/search?q=${encodeURIComponent(translateResult.original)}`
+          }"
+        >
           <template #icon>
             <svg-icon name="google" class="w-[20px] h-[20px]" />
           </template>

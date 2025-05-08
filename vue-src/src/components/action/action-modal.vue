@@ -1,27 +1,40 @@
 <script setup>
 import useActionStore from '@/stores/action';
 import { storeToRefs } from 'pinia';
-import debounce from '@/logics/debounce';
-const actionStore = useActionStore()
+import { useKeydown } from '@/hooks/useKeydown';
+import { useNeuApp } from '@/neu-app-core';
 
+const actionStore = useActionStore()
+const neuApp = useNeuApp()
 const {show} = storeToRefs(actionStore)
 
-function handleKeyDown(e) {
+useKeydown((e) => {
   if (e.altKey && e.key.toUpperCase() === 'k'.toUpperCase()) {
     e.preventDefault(); // 阻止浏览器默认保存行为
     actionStore.toggleShow()
+    return
   }
-}
-
-const handleKeyDownDouble = debounce(handleKeyDown, 200)
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeyDownDouble)
+  if (show.value){
+    if (e.key === 'Enter'){
+      e.preventDefault()
+      neuApp.emit("enterAction")
+      return
+    }
+    // changeCurrentAction(e.key)
+   if (e.key === 'ArrowUp'){
+     e.preventDefault()
+     actionStore.subCurrentIndex()
+     return 
+   }
+   if (e.key === 'ArrowDown'){
+     e.preventDefault()
+     actionStore.addCurrentIndex()
+     return
+   }
+  }
 })
 
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeyDownDouble)
-})
+
 </script>
 
 <template>

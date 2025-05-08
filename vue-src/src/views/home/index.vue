@@ -82,11 +82,6 @@
       });
   }
 
-  function openGitHub() {
-    neuApp.openInBrowser("https://github.com/windyeasy/translate-helper");
-  }
-
-
 </script>
 
 <template>
@@ -98,13 +93,18 @@
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
     <action-panel title="About">
-      <action-section title="Open GitHub" @click="openGitHub">
+      <action-section 
+        title="Open GitHub" 
+        :action="{
+          type: 'openInBrowser',
+          value: 'https://github.com/windyeasy/translate-helper'
+        }"
+      >
         <template #icon>
             <div class="i-carbon:logo-github w-[20px] h-[20px]" />
         </template>
       </action-section>
     </action-panel>
-    
   </div>
 </template>
 

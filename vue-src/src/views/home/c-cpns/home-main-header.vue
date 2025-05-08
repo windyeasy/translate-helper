@@ -59,7 +59,7 @@ async function handleCopy() {
           class="ml-2 flex-1" 
           placeholder="Enter text to translate..." 
           autofocus
-          @keydown.enter="handleCopy"
+          @keydown.enter.stop="handleCopy"
         />
       </div>
     </div>
