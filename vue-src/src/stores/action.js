@@ -4,6 +4,7 @@ const useActionStore = defineStore("action", {
   state: () => ({
    currentIndex: 0,
    sectionTitles: [],
+   
    show: false
   }),
   actions: {

@@ -101,7 +101,7 @@
         }"
       >
         <template #icon>
-            <div class="i-carbon:logo-github w-[20px] h-[20px]" />
+          <div class="i-carbon:logo-github w-[20px] h-[20px]" />
         </template>
       </action-section>
     </action-panel>

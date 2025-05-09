@@ -34,6 +34,12 @@ useKeydown((e) => {
   }
 })
 
+// const searchKeyworld = ref('')
+
+// //
+// function changeSearchKeyworld(e) {
+//   searchKeyworld.value = e.target.value
+// }
 
 </script>
 
@@ -41,9 +47,17 @@ useKeydown((e) => {
   <div class="action-modal-wrapper" v-show="show">
     <div class="mask" @click="actionStore.hideShow"></div>
     <div class="action-modal flex flex-col" >
-      <div class="panel-header px-3 py-4">
-        <input autofocus type="text" placeholder="Search for action..." class="search-action-inp" plasholder="Search for action...">
-      </div>
+      <!-- <div class="panel-header px-3 py-4">
+        <input 
+          autofocus 
+          type="text" 
+          placeholder="Search for action..." 
+          class="search-action-inp" 
+          plasholder="Search for action..."
+          :value="searchKeyworld"
+          @input="changeSearchKeyworld"
+        >
+      </div> -->
       <div class="action-list px-3 flex-1" id="action-list"> 
         <slot></slot>
       </div>
