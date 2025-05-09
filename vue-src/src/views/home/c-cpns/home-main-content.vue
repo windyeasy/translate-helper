@@ -1,59 +1,21 @@
 <script setup>
-const emit = defineEmits(['translateListChange'])
-const props = defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  }
-})
+import useTranslateStore from '@/stores/translate';
+import { storeToRefs } from 'pinia';
 
-const currentIndex = ref(0)
-function handleToggle(index) {
-  currentIndex.value = index
-  emit('translateListChange', index)
-}
-
+const {list} = storeToRefs(useTranslateStore())
 </script>
 
 <template>
   <div class="home-main-content flex-1 flex justify-center items-center ">
     <div class="main-content-inner w-full flex" v-if="list.length">
       <div class="inner-left p-3">
-        <translate-list 
-          :list="list" 
-          :currentIndex="currentIndex" 
-          @toggle="handleToggle" 
-        />
+        <translate-list />
       </div>
       <div class="inner-right">
-        <translate-detail :translateResult="list[currentIndex]" />
+        <translate-detail  />
       </div>
     </div>
     <no-results v-else />
-    <!-- <ActionPanel>
-        <ActionSection title="Open in Google Translate" @click="handleOpenInGoogleTranslate">
-          <template #right>
-            <div 
-              class="right-icon ml-1" 
-            >
-              <icon-item>
-                <svg-icon name="enter" />
-              </icon-item>
-            </div>
-          </template>
-        </ActionSection>
-        <ActionSection title="Open in Google Translate" @click="handleSectionClick(1)">
-          <template #right>
-            <div 
-              class="right-icon ml-1" 
-            >
-              <icon-item>
-                <svg-icon name="enter" />
-              </icon-item>
-            </div>
-          </template>
-        </ActionSection>
-    </ActionPanel> -->
   </div>
 </template>
 

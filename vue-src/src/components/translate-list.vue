@@ -1,20 +1,13 @@
 <script setup>
+import useTranslateStore from '@/stores/translate';
+import { storeToRefs } from 'pinia';
 
-const emit = defineEmits(['toggle'])
-defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  },
-  currentIndex: {
-    type: Number,
-    default: 0
-  }
-})
 
+const translateStore = useTranslateStore()
+const {list, currentIndex} = storeToRefs(translateStore)
 
 function changeCurrentIndex(index) {
-  emit('toggle', index)
+  currentIndex.value = index
 }
 
 </script>

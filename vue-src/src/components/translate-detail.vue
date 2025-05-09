@@ -1,26 +1,25 @@
 <script setup>
+import VsToast from '@vuesimple/vs-toast';
+import { storeToRefs } from 'pinia';
+
 import { getLanguageName } from "@/data/languages.js"
 import {useNeuApp} from "@/neu-app-core";
-import VsToast from '@vuesimple/vs-toast';
+import useTranslateStore from '@/stores/translate';
 
-const props = defineProps({
-  translateResult: {
-    type: Object,
-    default: () => ({})
-  }
-})
 
+
+const {activeTranslate: translateResult} = storeToRefs(useTranslateStore())
 const neuApp = useNeuApp()
 const translateBackResult = ref({})
 const isLoading = ref(false)
 
 const isSame = computed(() => {
-  const {original} = props.translateResult
+  const {original} = translateResult.value
   return original?.trim().toLowerCase() === translateBackResult.value?.translated?.trim().toLowerCase()
 })
 
 function handleTranslateBack(){
-  const {translated, from, to } = props.translateResult
+  const {translated, from, to } = translateResult.value
   isLoading.value = true
   neuApp.translate(translated, to, from).then(res => {
     isLoading.value = false
@@ -39,7 +38,7 @@ function handleTranslateBack(){
 }
 
 watchEffect(()  => {
-  if (props.translateResult && props.translateResult.translated){
+  if (translateResult.value && translateResult.value.translated){
     handleTranslateBack()
   }
 })
