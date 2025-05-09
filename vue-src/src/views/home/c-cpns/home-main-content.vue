@@ -1,10 +1,7 @@
 <script setup>
-import WordList from '@/components/word-list.vue'
-import WordResult from '@/components/word-result.vue'
-import { useNeuApp } from '@/neu-app-core'
-
+const emit = defineEmits(['translateListChange'])
 const props = defineProps({
-  wordList: {
+  list: {
     type: Array,
     default: () => []
   }
@@ -13,33 +10,23 @@ const props = defineProps({
 const currentIndex = ref(0)
 function handleToggle(index) {
   currentIndex.value = index
+  emit('translateListChange', index)
 }
 
-const currentTranslated = computed(() => {
-  return props.wordList[currentIndex.value]
-})
-
-// action
-const neuApp = useNeuApp()
-function handleOpenInGoogleTranslate(){
-  const item = currentTranslated.value
-
-  // const url = `https://translate.google.com/?sl=${item.from}&tl=${item.to}&text=${encodeURIComponent(item.original)}&op=translate`
-  // console.log()
-  neuApp.native.os.open("https://www.baidu.com");
-}
 </script>
 
 <template>
   <div class="home-main-content flex-1 flex justify-center items-center ">
-    <div class="main-content-inner w-full flex" v-if="wordList.length">
+    <div class="main-content-inner w-full flex" v-if="list.length">
       <div class="inner-left p-3">
-        <word-list :list="wordList" 
+        <translate-list 
+          :list="list" 
           :currentIndex="currentIndex" 
-          @toggle="handleToggle" />
+          @toggle="handleToggle" 
+        />
       </div>
       <div class="inner-right">
-        <word-result :translateResult="wordList[currentIndex]" />
+        <translate-detail :translateResult="list[currentIndex]" />
       </div>
     </div>
     <no-results v-else />

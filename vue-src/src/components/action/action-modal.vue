@@ -1,38 +1,12 @@
 <script setup>
-import useActionStore from '@/stores/action';
 import { storeToRefs } from 'pinia';
-import { useKeydown } from '@/hooks/useKeydown';
-import { useNeuApp } from '@/neu-app-core';
+import useActionStore from '@/stores/action';
 
 const actionStore = useActionStore()
-const neuApp = useNeuApp()
+
 const {show} = storeToRefs(actionStore)
 
-useKeydown((e) => {
-  if (e.altKey && e.key.toUpperCase() === 'k'.toUpperCase()) {
-    e.preventDefault(); // 阻止浏览器默认保存行为
-    actionStore.toggleShow()
-    return
-  }
-  if (show.value){
-    if (e.key === 'Enter'){
-      e.preventDefault()
-      neuApp.emit("enterAction")
-      return
-    }
-    // changeCurrentAction(e.key)
-   if (e.key === 'ArrowUp'){
-     e.preventDefault()
-     actionStore.subCurrentIndex()
-     return 
-   }
-   if (e.key === 'ArrowDown'){
-     e.preventDefault()
-     actionStore.addCurrentIndex()
-     return
-   }
-  }
-})
+
 
 // const searchKeyworld = ref('')
 

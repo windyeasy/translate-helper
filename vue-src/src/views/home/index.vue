@@ -4,10 +4,13 @@
   import HomeMainContent from "./c-cpns/home-main-content.vue";
   import SettingModal from "./c-cpns/setting-modal.vue";
   import VsToast from '@vuesimple/vs-toast';
-
+  import { useKeydown } from '@/hooks/useKeydown';
   import { useNeuApp } from "@/neu-app-core";
   import useSettingStore from "@/stores/setting";
   import { languagesByCode } from "@/data/languages";
+
+  import useActionStore from '@/stores/action';
+import { storeToRefs } from "pinia";
 
   const settingModalRef = ref(null);
 
@@ -17,7 +20,7 @@
 
   const neuApp = useNeuApp();
   const isLoading = ref(false);
-  const wordList = ref([]);
+  const list = ref([]);
 
   const settingStore = useSettingStore();
   const targetLangs = computed(() => {
@@ -34,7 +37,7 @@
     isLoading.value = false;
     searchKeyword.value = value;
     if (!value) {
-      wordList.value = [];
+      list.value = [];
       return;
     }
     if (targetLangs.value.length === 0){
@@ -62,11 +65,11 @@
       .translateAll(sourceText, fromLang.value, targetLangs.value)
       .then((res) => {
         if (requestId === lastRequestId){
-          wordList.value = res;
+          list.value = res;
           isLoading.value = false;
         }
         if (!searchKeyword.value){
-            wordList.value = []
+            list.value = []
         }
       })
       .catch((error) => {
@@ -81,17 +84,71 @@
         });
       });
   }
+  const navLeftIndex = ref(0)
+  function changeNavLeftIndex(index){
+    navLeftIndex.value = index
+  }
+  async function handleCopy(value) {
+    if (value){
 
+      await neuApp.clipboardWriteText(value)
+      VsToast.show({
+        title: 'copied',
+        variant: 'success',
+        showClose: false,
+      });
+    }
+  }
+  // handler keydown
+  const actionStore = useActionStore()
+
+  const {show} = storeToRefs(actionStore)
+  useKeydown((e) => {
+    // 
+    if (e.ctrlKey && e.key.toUpperCase() === 'k'.toUpperCase()) {
+      e.preventDefault(); 
+      actionStore.toggleShow()
+      return
+    }
+    if (show.value){
+      if (e.key === 'Enter'){
+        e.preventDefault()
+        neuApp.emit("enterAction")
+        return
+      }
+      // changeCurrentAction(e.key)
+    if (e.key === 'ArrowUp'){
+      e.preventDefault()
+      actionStore.subCurrentIndex()
+      return 
+    }
+    if (e.key === 'ArrowDown'){
+      e.preventDefault()
+      actionStore.addCurrentIndex()
+      return
+    }
+    }else {
+      if (e.key === 'Enter'){
+          e.preventDefault()
+          
+          return
+      }
+    }
+  })
 </script>
 
 <template>
   <div class="home-container flex flex-col h-full">
     <main class="flex-1 flex flex-col hidden">
       <HomeMainHeader @search="handleTranslate" :isLoading="isLoading" />
-      <HomeMainContent :word-list="wordList" />
+      <HomeMainContent 
+        :list="list" 
+        @translateListChange="changeNavLeftIndex"
+      />
     </main>
     <HomeFooter @setting-click="openSetting" />
     <SettingModal ref="settingModalRef" />
+
     <action-panel title="About">
       <action-section 
         title="Open GitHub" 

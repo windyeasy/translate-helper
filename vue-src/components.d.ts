@@ -19,7 +19,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SelectLang: typeof import('./src/components/select-lang.vue')['default']
     SvgIcon: typeof import('./src/components/icons/svg-icon.vue')['default']
-    WordList: typeof import('./src/components/word-list.vue')['default']
-    WordResult: typeof import('./src/components/word-result.vue')['default']
+    TranslateDetail: typeof import('./src/components/translate-detail.vue')['default']
+    TranslateList: typeof import('./src/components/translate-list.vue')['default']
   }
 }

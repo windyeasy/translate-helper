@@ -56,8 +56,8 @@ async function copyText(text) {
 </script>
 
 <template>
-  <div class="word-result flex flex-col h-full">
-    <main class="word-result-main p-3 font-size-[18px] flex-1">
+  <div class="translate-detail flex flex-col h-full">
+    <main class="translate-detail-main p-3 font-size-[18px] flex-1">
       <div class="translated relative pt-2 pb-4 pr-[40px]">
         {{ translateResult.translated }}
         <icon-item class="copy-button w-[30px] absolute right-0 top-0" @click="copyText(translateResult.translated)">
@@ -67,7 +67,7 @@ async function copyText(text) {
       <div class="translate-back pt-3" v-if="translateBackResult.translated && !isSame && !isLoading">{{ translateBackResult.translated }}</div>
     </main>
 
-    <footer class="word-result-footer p-3 h-[40%]">
+    <footer class="translate-detail-footer p-3 h-[40%]">
       <div class="footer-item pb-3 flex justify-between">
         <div class="item-left">From</div>
         <div class="footer-item-right">{{ getLanguageName(translateResult.from) }}</div>
@@ -126,7 +126,7 @@ async function copyText(text) {
   border-top: 1px solid var(--c-border-color);
 }
 
-.word-result-footer,  .check-translate{
+.translate-detail-footer,  .check-translate{
   border-top: 1px solid var(--c-border-color);
 }
 .item-left {

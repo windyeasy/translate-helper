@@ -20,12 +20,12 @@ function changeCurrentIndex(index) {
 </script>
 
 <template>
-  <div class="word-list">
+  <div class="translate-list">
     <template v-for="(item, index) in list" :key="index">
-      <div class="word-item flex px-2 p-3" 
+      <div class="list-item flex px-2 p-3" 
       :class="{active: index === currentIndex}" @click="changeCurrentIndex(index)" >
-        <div class="word-item-left flex-1">{{ item.translated }} </div>
-        <div class="word-item-right">
+        <div class="list-item-left flex-1">{{ item.translated }} </div>
+        <div class="list-item-right">
            {{ item.to }}
         </div>
       </div>
@@ -34,11 +34,11 @@ function changeCurrentIndex(index) {
 </template>
 
 <style lang="scss" scoped>
-.word-list {
+.translate-list {
   box-sizing: border-box;
  
   height: 100%;
-  .word-item {
+  .list-item {
     border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
@@ -48,7 +48,7 @@ function changeCurrentIndex(index) {
     background-color: var(--c-item-bg);
   }
 
-  .word-item-right {
+  .list-item-right {
     color: var(--c-sub-text-color);
     display: flex;
     align-items: center;

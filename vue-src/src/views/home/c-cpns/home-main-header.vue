@@ -34,17 +34,7 @@ neuApp.on("neuTranslateByHotkey", async (value) => {
   debounceSearch()
 })
 
-async function handleCopy() {
-  if (keyword.value){
-    console.log(keyword.value)
-    await neuApp.clipboardWriteText(keyword.value)
-    VsToast.show({
-      title: 'copied',
-      variant: 'success',
-      showClose: false,
-    });
-  }
-}
+
 </script>
 
 <template>
@@ -59,7 +49,6 @@ async function handleCopy() {
           class="ml-2 flex-1" 
           placeholder="Enter text to translate..." 
           autofocus
-          @keydown.enter.stop="handleCopy"
         />
       </div>
     </div>

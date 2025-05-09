@@ -29,7 +29,7 @@
         <div class="action-area flex items-center cursor-pointer" @click="openShow">
           <div class="action-title mr-3">Actions</div>
           <icon-item class="w-[30px] h-[28px]">
-            <span>Alt</span>
+            <span>Ctrl</span>
           </icon-item>
           <icon-item class="ml-1 w-[30px] h-[28px]">
             <span>K</span>
