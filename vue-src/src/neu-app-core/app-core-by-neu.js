@@ -23,11 +23,16 @@ class AppCoreByNeu extends EasyEventBus {
   async init(config) {
     this._config = config;
    
-    this.toggleHotkey = config.toggleHotkey || ["ctrl", "alt", "h"];
-    this.tranlateHotkey = config.tranlateHotkey || ["ctrl", "alt", "f"];
+    this.toggleHotkey = config.toggleHotkey || ["alt", "k"];
+    this.tranlateHotkey = config.tranlateHotkey || ["alt", "d"];
     this.native.init();
     this.translator.init()
     this.settingPath = `${NL_PATH}/setting.json`
+    // save default setting
+    this.saveSettingJson({
+      toggleHotkey: this.toggleHotkey,
+      tranlateHotkey: this.tranlateHotkey,
+    })
     // init task
     // 1. set App tray
     this.setAppTray();
@@ -212,20 +217,18 @@ class AppCoreByNeu extends EasyEventBus {
 
 
   async activeWindow() {
-    // 确保窗口可见
     if (!(await this.native.window.isVisible())) {
       await this.native.window.show();
     }
 
-    // 确保窗口不是最小化状态
+  
     if (await this.native.window.isMinimized()) {
       await this.native.window.unminimize();
     }
 
-    // 将窗口聚焦
+  
     await this.native.window.focus();
 
-    // 可选：将窗口置顶
     await this.native.window.setAlwaysOnTop(true);
     setTimeout(() => {
       this.native.window.setAlwaysOnTop(false);
