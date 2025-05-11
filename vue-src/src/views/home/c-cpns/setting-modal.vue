@@ -1,13 +1,9 @@
 <script setup>
   import useSettingStore from "@/stores/setting";
   import { useNeuApp } from "@/neu-app-core";
+  import { useKeydown } from "@/hooks/useKeydown";
 
-  defineExpose({
-    openShow() {
-      show.value = true;
-    },
-  });
-  const show = ref(false);
+  const show = defineModel({ type: Boolean, default: false })
 
   const settingStore = useSettingStore();
 
@@ -40,10 +36,7 @@
 
   const neuApp = useNeuApp();
 
-  const globalHotkeys = reactive({
-    toggleHotkey: neuApp.toggleHotkey,
-    tranlateHotkey: neuApp.tranlateHotkey,
-  })
+
 
   function closeModal() {
     show.value = false;
@@ -59,10 +52,48 @@
   function changeActiveTab(value) {
     activeTab.value = value;
   }
+
+  // hotkey
+  const hotkeyActiveIndex = ref(null)
+  const globalHotkeys = reactive({
+    toggleHotkey: neuApp.toggleHotkey,
+    translateHotkey: neuApp.translateHotkey,
+  })
+  function changeHotkeyActiveIndex(index) {
+    hotkeyActiveIndex.value = index;
+  }
+
+  function handleEditKeyboard(e) {
+    const hotkey = []
+    if (e.ctrlKey) {
+      hotkey.push('Ctrl')
+    }
+    if (e.altKey){
+      hotkey.push('Alt')
+    }
+    if (e.shiftKey){
+      hotkey.push('Shift')
+    }
+    if (e.key !== 'Alt' && e.key !== 'Control' && e.key !== 'Shift'){
+      hotkey.push(e.key.charAt(0).toUpperCase())
+    }
+    return hotkey
+  }
+  // setting hotkey
+  useKeydown((e) => {
+    if (hotkeyActiveIndex.value == null || !show.value) return
+   
+    if (hotkeyActiveIndex.value == 'toggleHotkey') 
+      return globalHotkeys.toggleHotkey = handleEditKeyboard(e)
+      
+    if (hotkeyActiveIndex.value == 'translateHotkey')
+      return globalHotkeys.translateHotkey = handleEditKeyboard(e)
+
+  })
 </script>
 
 <template>
-  <div class="setting-modal" v-if="show">
+  <div class="setting-modal" v-if="show" @click="changeHotkeyActiveIndex(null)">
     <div class="mask"></div>
     <div class="setting-modal-wrapper flex flex-col">
       <div class="modal-header">
@@ -120,11 +151,23 @@
           <div class="global-hotkeys w-[460px]">
             <div class="hotkey-item flex pt-6 justify-between items-center">
               <div class="item-title">Trigger the app with hotkey:</div>
-              <div class="hotkey-input">{{ globalHotkeys.toggleHotkey?.join("+") }}</div>
+              <div 
+                class="hotkey-input"
+                :class="{active: hotkeyActiveIndex === 'toggleHotkey'}"
+                @click.stop="changeHotkeyActiveIndex('toggleHotkey')"
+              >
+                {{ globalHotkeys.toggleHotkey?.join("+") }}
+              </div>
             </div>
             <div class="hotkey-item flex pt-6 justify-between items-center">
               <div class="item-title">Translate clipboard with hotkey：</div>
-              <div class="hotkey-input">{{ globalHotkeys.tranlateHotkey?.join("+") }}</div>
+              <div 
+                class="hotkey-input" 
+                :class="{active: hotkeyActiveIndex === 'translateHotkey'}"
+                @click.stop="changeHotkeyActiveIndex('translateHotkey')"
+              >
+                {{ globalHotkeys.translateHotkey?.join("+") }}
+              </div>
             </div>
           </div>
         </template>
@@ -214,9 +257,14 @@
       .hotkey-item {
         .hotkey-input {
           border: 1px solid var(--c-border-color);
+          border-bottom: 2px solid var(--c-border-color);
           text-align: center;
           width: 200px;
           padding: 4px 0 6px;
+
+          &.active {
+            border-bottom: 2px solid var(--c-primary);
+          }
         }
       }
     }

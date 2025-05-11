@@ -1,5 +1,5 @@
 {
-  "applicationId": "js.neutralino.tranlate-helper",
+  "applicationId": "js.neutralino.translate-helper",
   "version": "1.0.0",
   "defaultMode": "window",
   "port": 0,
@@ -24,7 +24,7 @@
   ],
   "modes": {
     "window": {
-      "title": "TranlateHelper",
+      "title": "TranslateHelper",
       "width": 900,
       "height": 700,
       

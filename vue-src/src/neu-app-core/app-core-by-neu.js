@@ -17,22 +17,18 @@ class AppCoreByNeu extends EasyEventBus {
    * @param {Object} config 
    * @param {Object} config.trayIcon 
    * @param {Array<string>} config.toggleHotkey  toggle hide or show  window.
-   * @param {Array<string>} config.tranlateHotkey click the hotkey to automatically translate the text from the clipboard.
+   * @param {Array<string>} config.translateHotkey click the hotkey to automatically translate the text from the clipboard.
    *   
    */
   async init(config) {
     this._config = config;
    
-    this.toggleHotkey = config.toggleHotkey || ["alt", "k"];
-    this.tranlateHotkey = config.tranlateHotkey || ["alt", "d"];
+    this.toggleHotkey = config.toggleHotkey || ["Alt", "K"];
+    this.translateHotkey = config.translateHotkey || ["Alt", "D"];
     this.native.init();
     this.translator.init()
     this.settingPath = `${NL_PATH}/setting.json`
-    // save default setting
-    this.saveSettingJson({
-      toggleHotkey: this.toggleHotkey,
-      tranlateHotkey: this.tranlateHotkey,
-    })
+  
     // init task
     // 1. set App tray
     this.setAppTray();
@@ -41,8 +37,16 @@ class AppCoreByNeu extends EasyEventBus {
     // 3. handle hotkey
     this.handleHotkey();
     // 4. 实现开机自启功能, 后面实现
-    this.loadSettingJson();
+    const setting = this.loadSettingJson();
 
+    if (!setting.toggleHotkey){
+      setting.toggleHotkey = this.toggleHotkey
+    }
+    if (!setting.translateHotkey){
+      setting.translateHotkey = this.translateHotkey
+    }
+    // save default setting
+    this.saveSettingJson(setting)
   }
   /**
    * todo: Internationalization
@@ -144,7 +148,7 @@ class AppCoreByNeu extends EasyEventBus {
     );
 
     // 2. translate by hotkey
-    this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.tranlateHotkey, async() => {
+    this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.translateHotkey, async() => {
       console.log("translate test")
       if (this.windowState === 'hide')
         this.windowState = 'show' 

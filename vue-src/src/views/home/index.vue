@@ -13,11 +13,10 @@
   import { storeToRefs } from "pinia";
   import useTranslateStore from "@/stores/translate";
 
-
-  /** setting **/ 
-  const settingModalRef = ref(null);
+  /** setting **/
+  const showSettingModal = ref(false);
   function openSetting() {
-    settingModalRef.value.openShow();
+    showSettingModal.value = true;
   }
 
   const settingStore = useSettingStore();
@@ -25,12 +24,12 @@
     return settingStore.targetLanguages.map((item) => item.code);
   });
 
-  /** translate **/ 
+  /** translate **/
   const neuApp = useNeuApp();
   const isLoading = ref(false);
 
-  const translateStore = useTranslateStore()
-  const {list, currentIndex, activeTranslate} = storeToRefs(translateStore)
+  const translateStore = useTranslateStore();
+  const { list, currentIndex, activeTranslate } = storeToRefs(translateStore);
 
   const langReg = new RegExp(
     `[>:/](${Object.keys(languagesByCode).join("|")})$`,
@@ -99,7 +98,6 @@
   }
 
   async function handleCopy(value) {
-
     if (value) {
       await neuApp.clipboardWriteText(value);
       VsToast.show({
@@ -114,12 +112,7 @@
 
   const { show } = storeToRefs(actionStore);
   useKeydown((e) => {
-    //
-    if (e.ctrlKey && e.key.toUpperCase() === "k".toUpperCase()) {
-      e.preventDefault();
-      actionStore.toggleShow();
-      return;
-    }
+    if (showSettingModal.value) return
     if (show.value) {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -137,22 +130,33 @@
         actionStore.addCurrentIndex();
         return;
       }
-    } else if (list.value.length) {
+      return;
+    }
+
+    // open action 
+    if (e.ctrlKey && e.key.toUpperCase() === "k".toUpperCase()) {
+      e.preventDefault();
+      actionStore.toggleShow();
+      return;
+    }
+
+    
+    if (list.value.length) {
       if (e.key === "Enter") {
         e.preventDefault();
-        handleCopy(activeTranslate.value?.translated)
+        handleCopy(activeTranslate.value?.translated);
         return;
       }
 
       // toggle left nav
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        translateStore.addCurrentIndex()
+        translateStore.addCurrentIndex();
         return;
       }
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        translateStore.subCurrentIndex()
+        translateStore.subCurrentIndex();
         return;
       }
     }
@@ -166,7 +170,7 @@
       <HomeMainContent />
     </main>
     <HomeFooter @setting-click="openSetting" />
-    <SettingModal ref="settingModalRef" />
+    <SettingModal v-model="showSettingModal"  />
 
     <action-panel title="About">
       <action-section
