@@ -113,6 +113,12 @@
   const { show } = storeToRefs(actionStore);
   useKeydown((e) => {
     if (showSettingModal.value) return
+      // open action 
+    if (e.ctrlKey && e.key.toUpperCase() === "k".toUpperCase()) {
+      e.preventDefault();
+      actionStore.toggleShow();
+      return;
+    }
     if (show.value) {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -133,12 +139,7 @@
       return;
     }
 
-    // open action 
-    if (e.ctrlKey && e.key.toUpperCase() === "k".toUpperCase()) {
-      e.preventDefault();
-      actionStore.toggleShow();
-      return;
-    }
+  
 
     
     if (list.value.length) {
