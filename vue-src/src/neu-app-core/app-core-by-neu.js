@@ -12,6 +12,7 @@ class AppCoreByNeu extends EasyEventBus {
     this.translator = new TranslatorByNeuApp(this)
     this._extension = "js.neutralino.nodeext"; // handle hotkey by the extension of node 
     this.windowState = "show"; // hide or show
+    this.isSetting = false
   }
   /**
    * @param {Object} config 
@@ -22,9 +23,9 @@ class AppCoreByNeu extends EasyEventBus {
    */
   async init(config) {
     this._config = config;
-   
-    this.toggleHotkey = config.toggleHotkey || ["Alt", "K"];
-    this.translateHotkey = config.translateHotkey || ["Alt", "D"];
+    this.globalHotkeys = {}
+    this.globalHotkeys.toggleHotkey = config.toggleHotkey || ["Alt", "K"];
+    this.globalHotkeys.translateHotkey = config.translateHotkey || ["Alt", "D"];
     this.native.init();
     this.translator.init()
     this.settingPath = `${NL_PATH}/setting.json`
@@ -35,18 +36,32 @@ class AppCoreByNeu extends EasyEventBus {
     // 2.The window close button dose not exit the app
     this.handleWindowClose();
     // 3. handle hotkey
-    this.handleHotkey();
+  
     // 4. 实现开机自启功能, 后面实现
-    const setting = this.loadSettingJson();
+    const setting = await this.loadSettingJson();
+ 
+    if (!setting.globalHotkeys){
+      setting.globalHotkeys = this.globalHotkeys
+    }else {
+      this.globalHotkeys = setting.globalHotkeys
+    }
 
-    if (!setting.toggleHotkey){
-      setting.toggleHotkey = this.toggleHotkey
-    }
-    if (!setting.translateHotkey){
-      setting.translateHotkey = this.translateHotkey
-    }
     // save default setting
     this.saveSettingJson(setting)
+    // todo: 执行下一个处理的时候，这个处理没有移除监听，和发出事件
+    this._cancelHandleHotkey = this.handleHotkey()
+
+    this._globalHotkeys = this.globalHotkeys
+    Object.defineProperty(this, 'globalHotkeys', {
+      get(){
+        return this._globalHotkeys
+      },
+      set(value){
+        this._globalHotkeys = value
+        this._cancelHandleHotkey && this._cancelHandleHotkey()
+        this._cancelHandleHotkey = this.handleHotkey()
+      }
+    })
   }
   /**
    * todo: Internationalization
@@ -139,17 +154,19 @@ class AppCoreByNeu extends EasyEventBus {
   /**
    * Neutralino doesn't support globalKeyboard, so we use extension to implement it.
    */
-  async handleHotkey() {
+   handleHotkey() {
     // 1. toggle by hotkey
-    this.listenerGlobalKeyword(
-      this.handleGlobalKeyboard(this.toggleHotkey, () => {
+    const cancelToggleHotkey = this.listenerGlobalKeyword(
+      this.handleGlobalKeyboard(this.globalHotkeys.toggleHotkey, () => {
+       
+        if (this.isSetting) return
         this.changeWindowState();
       })
     );
 
     // 2. translate by hotkey
-    this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.translateHotkey, async() => {
-      console.log("translate test")
+   const cancelTranslateHotkey =  this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.globalHotkeys.translateHotkey, async() => {
+      if (this.isSetting) return
       if (this.windowState === 'hide')
         this.windowState = 'show' 
       this.activeWindow()
@@ -157,11 +174,16 @@ class AppCoreByNeu extends EasyEventBus {
       const value = await this.clipboardReadText()
       this.emit("neuTranslateByHotkey", value)
     }))
+    
+    return () => {
+      cancelToggleHotkey();
+      cancelTranslateHotkey()
+    }
   }
   listenerGlobalKeyword(cb) {
     if (typeof cb !== "function") new TypeError("cb must be a function");
 
-    this.neuEventOn("globalKeyboard", (event) => {
+    return this.neuEventOn("globalKeyboard", (event) => {
       const { e, down } = JSON.parse(event.detail);
       cb(e, down);
     });
@@ -216,7 +238,11 @@ class AppCoreByNeu extends EasyEventBus {
    * @param {Function} callback
    */
   neuEventOn(eventName, callback) {
+    const cancel = () => {
+      this.native.events.off(eventName, callback);
+    };
     this.native.events.on(eventName, callback);
+    return cancel
   }
 
 

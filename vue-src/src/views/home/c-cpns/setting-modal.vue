@@ -4,15 +4,16 @@
   import { useKeydown } from "@/hooks/useKeydown";
 
   const show = defineModel({ type: Boolean, default: false })
+  const neuApp = useNeuApp();
 
   const settingStore = useSettingStore();
-
   const targetLanguages = ref([]);
 
   watchEffect(() => {
     if (show.value) {
       targetLanguages.value = [...settingStore.targetLanguages];
     }
+    neuApp.isSetting = show.value;
   });
 
   function addLangItem() {
@@ -34,17 +35,9 @@
     targetLanguages.value[i].code = v.code;
   }
 
-  const neuApp = useNeuApp();
-
-
-
   function closeModal() {
     show.value = false;
-  }
-
-  function handleSaveSetting() {
-    settingStore.saveSetting(neuApp, targetLanguages.value);
-    closeModal();
+    neuApp.isSetting = false;
   }
 
   const activeTab = ref("languages");
@@ -56,8 +49,7 @@
   // hotkey
   const hotkeyActiveIndex = ref(null)
   const globalHotkeys = reactive({
-    toggleHotkey: neuApp.toggleHotkey,
-    translateHotkey: neuApp.translateHotkey,
+   ...neuApp.globalHotkeys
   })
   function changeHotkeyActiveIndex(index) {
     hotkeyActiveIndex.value = index;
@@ -79,6 +71,7 @@
     }
     return hotkey
   }
+
   // setting hotkey
   useKeydown((e) => {
     if (hotkeyActiveIndex.value == null || !show.value) return
@@ -88,8 +81,18 @@
       
     if (hotkeyActiveIndex.value == 'translateHotkey')
       return globalHotkeys.translateHotkey = handleEditKeyboard(e)
-
   })
+
+  function handleSaveSetting() {
+    neuApp.globalHotkeys = {...globalHotkeys};
+
+    settingStore.saveSetting(neuApp, {
+      targetLanguages: targetLanguages.value, 
+      globalHotkeys:  neuApp.globalHotkeys
+    });
+   
+    closeModal();
+  }
 </script>
 
 <template>

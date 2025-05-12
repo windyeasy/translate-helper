@@ -8,12 +8,8 @@ const useSettingStore = defineStore("setting", {
     // todo: self-starting
   }),
   actions: {
-    saveSetting(neuApp, targetLanguages) {
-      this.targetLanguages = [...targetLanguages]
-      const setting = {
-        targetLanguages,
-      }
-      neuApp.saveSettingJson(setting)
+    saveSetting(neuApp, setting) {
+      neuApp.saveSettingJson( {...setting})
     },
     // load setting from file
     async loadSetting(neuApp) {
