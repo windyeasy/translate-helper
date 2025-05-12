@@ -87,7 +87,7 @@
     neuApp.globalHotkeys = {...globalHotkeys};
 
     settingStore.saveSetting(neuApp, {
-      targetLanguages: targetLanguages.value, 
+      targetLanguages: [...targetLanguages.value], 
       globalHotkeys:  neuApp.globalHotkeys
     });
    
