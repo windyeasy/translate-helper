@@ -3,7 +3,7 @@
 <template>
   <div class="no-results flex flex-col justify-center items-center">
     <svg-icon name="none" class="c-white" width="6em" height="6em" />
-    <span class="mt-8">No Results</span>
+    <span class="mt-8">{{ $t("label.noResults") }}</span>
   </div>
 </template>
 

@@ -47,7 +47,7 @@ neuApp.on("neuTranslateByHotkey", async (value) => {
           :value="keyword"
           @input="handleChangeKeyword"
           class="ml-2 flex-1" 
-          placeholder="Enter text to translate..." 
+          :placeholder="$t('placeholder.inputText')" 
           autofocus
         />
       </div>

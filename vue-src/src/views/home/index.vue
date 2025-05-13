@@ -4,6 +4,9 @@
   import HomeMainContent from "./c-cpns/home-main-content.vue";
   import SettingModal from "./c-cpns/setting-modal.vue";
   import VsToast from "@vuesimple/vs-toast";
+  import { useI18n } from 'vue-i18n'
+
+
   import { useKeydown } from "@/hooks/useKeydown";
   import { useNeuApp } from "@/neu-app-core";
   import useSettingStore from "@/stores/setting";
@@ -23,7 +26,7 @@
   const targetLangs = computed(() => {
     return settingStore.targetLanguages.map((item) => item.code);
   });
-
+  const { t } = useI18n() 
   /** translate **/
   const neuApp = useNeuApp();
   const isLoading = ref(false);
@@ -53,8 +56,8 @@
     }
     if (targetLangs.value.length === 0) {
       VsToast.show({
-        title: "Please set the target language first",
-        message: "click the setting button",
+        title: t("toast.setWarring"),
+        message: t("toast.clickMessage"),
         variant: "warning",
       });
       return;
@@ -101,7 +104,7 @@
     if (value) {
       await neuApp.clipboardWriteText(value);
       VsToast.show({
-        title: "copied",
+        title: t("toast.copied"),
         variant: "success",
         showClose: false,
       });

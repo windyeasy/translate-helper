@@ -1,12 +1,13 @@
 <script setup>
 import VsToast from '@vuesimple/vs-toast';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 
 import { getLanguageName } from "@/data/languages.js"
 import {useNeuApp} from "@/neu-app-core";
 import useTranslateStore from '@/stores/translate';
 
-
+const {t} = useI18n()
 
 const {activeTranslate: translateResult} = storeToRefs(useTranslateStore())
 const neuApp = useNeuApp()
@@ -29,7 +30,7 @@ function handleTranslateBack(){
     isLoading.value = false
      err = err.toString()
     VsToast.show({
-      title: 'Could not translate',
+      title: t("toast.translateErrorTitle"),
       message: err,
       variant: 'error',
       showClose: false,
@@ -47,7 +48,7 @@ async function copyText(text) {
   await neuApp.clipboardWriteText(text)
  
   VsToast.show({
-    title: 'copied',
+    title: t("toast.copied"),
     variant: 'success',
     showClose: false,
   });

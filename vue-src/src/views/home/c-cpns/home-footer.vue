@@ -19,7 +19,7 @@
     <div class="footer-right flex">
       <div class="left">
         <div class="footer-right-item flex items-center">
-          <div class="item-title mr-2 copy">Copy</div>
+          <div class="item-title mr-2 copy">{{ $t("label.copy") }}</div>
           <icon-item>
             <svg-icon name="enter" />
           </icon-item>
@@ -27,7 +27,7 @@
       </div>
       <div class="right flex">
         <div class="action-area flex items-center cursor-pointer" @click="openShow">
-          <div class="action-title mr-3">Actions</div>
+          <div class="action-title mr-3">{{  $t("label.actions") }}</div>
           <icon-item class="w-[30px] h-[28px]">
             <span>Ctrl</span>
           </icon-item>

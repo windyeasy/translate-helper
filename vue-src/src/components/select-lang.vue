@@ -35,7 +35,7 @@ function handleRemove() {
       <div class="content-left flex-1 mr-2">
         <VueSelect 
          :modelValue="modelValue" 
-         placeholder="Please select language" 
+         :placeholder="$t('placeholder.selectLanguage')" 
          :options="languages"
          label="name"
          @update:modelValue="changeModelValue"
@@ -54,37 +54,7 @@ function handleRemove() {
 
 .select-content {
   position: relative;
-
-  .select-inp {
-    border: 1px solid var(--c-sub-text-color);
-    border-radius: 4px;
-    background-color: var(--c-bg);
-
-    .select-placeholder {
-      color: var(--c-select-placeholder);
-    }
-  }
-
-  .select-list {
-    position: absolute;
-    max-height: 200px;
-    overflow-y: auto;
-    top: 100%;
-    margin-top: 15px;
-    border: 1px solid var(--c-sub-text-color);
-    border-radius: 4px;
-    width: 100%;
-    background-color: var(--c-bg);
-    
-    .select-item {
-      cursor: pointer;
-      &:hover, &.active {
-        background-color: var(--c-select-hover);
-      }
-    }
-
-   
-  }
+ 
   .select-item-remove {
     color: red;
     font-weight: bold;
@@ -92,7 +62,4 @@ function handleRemove() {
   } 
 }
 
-.none-data {
-  color: var(--c-sub-text-color);
-}
 </style>

@@ -31,8 +31,14 @@
 
   function handleChangeModelValue(v, i) {
     if (!targetLanguages.value[i]) return;
-    targetLanguages.value[i].name = v.name;
-    targetLanguages.value[i].code = v.code;
+    if (v) {
+      targetLanguages.value[i].name = v.name;
+      targetLanguages.value[i].code = v.code;
+    }else {
+      targetLanguages.value[i].name = "";
+      targetLanguages.value[i].code = "";
+    }
+   
   }
 
   function closeModal() {
@@ -82,8 +88,9 @@
     if (hotkeyActiveIndex.value == 'translateHotkey')
       return globalHotkeys.translateHotkey = handleEditKeyboard(e)
   })
-
+  const changeLanguageRef = ref(null)
   function handleSaveSetting() {
+    changeLanguageRef.value.changeStoreLang()
     neuApp.globalHotkeys = {...globalHotkeys};
 
     settingStore.saveSetting(neuApp, {
@@ -100,7 +107,7 @@
     <div class="mask"></div>
     <div class="setting-modal-wrapper flex flex-col">
       <div class="modal-header">
-        setting
+        {{ $t("label.setting") }}
         <div
           class="i-carbon-close-large cursor-pointer close-icon"
           @click="closeModal"
@@ -113,14 +120,14 @@
             :class="{ active: activeTab === 'languages' }"
             @click="changeActiveTab('languages')"
           >
-            Languages
+            {{ $t("tab.targetLanguages") }}
           </div>
           <div
             class="tab font-bold font-[18px]"
             :class="{ active: activeTab === 'control' }"
             @click="changeActiveTab('control')"
           >
-            Control
+            {{ $t("tab.control") }}
           </div>
         </div>
 
@@ -133,7 +140,7 @@
                 :key="index"
               >
                 <select-lang
-                  :label="`language${index + 1}`"
+                  :label="`${$t('label.language')}${index + 1}`"
                   :code="item.code"
                   @change="handleChangeModelValue($event, index)"
                   class="flex-1"
@@ -145,15 +152,16 @@
               class="mt-3 w-full cursor-pointer add-lang-btn"
               @click="addLangItem"
             >
-              Add
+              {{ $t("buttons.add") }}
             </button>
           </div>
         </template>
 
         <template v-else>
           <div class="global-hotkeys w-[460px]">
+            <change-language ref="changeLanguageRef" />
             <div class="hotkey-item flex pt-6 justify-between items-center">
-              <div class="item-title">Trigger the app with hotkey:</div>
+              <div class="item-title">{{ $t("label.appHotkey") }}:</div>
               <div 
                 class="hotkey-input"
                 :class="{active: hotkeyActiveIndex === 'toggleHotkey'}"
@@ -163,7 +171,7 @@
               </div>
             </div>
             <div class="hotkey-item flex pt-6 justify-between items-center">
-              <div class="item-title">Translate clipboard with hotkey：</div>
+              <div class="item-title">{{ $t("label.translateHotkey") }}：</div>
               <div 
                 class="hotkey-input" 
                 :class="{active: hotkeyActiveIndex === 'translateHotkey'}"
@@ -180,10 +188,10 @@
           class="modal-footer-fixed flex justify-center items-center h-[80px]"
         >
           <button class="cancel-btn btn-secondary mr-3" @click="closeModal">
-            Cancel
+            {{ $t("buttons.cancel") }}
           </button>
           <button class="save-btn btn-primary" @click="handleSaveSetting">
-            Save
+           {{ $t("buttons.save") }}
           </button>
         </div>
       </div>

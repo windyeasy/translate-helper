@@ -1,10 +1,20 @@
 <script setup>
   import useSettingStore from "./stores/setting";
   import { useNeuApp } from "./neu-app-core";
+  import { useI18n } from "vue-i18n";
+
   const neuApp = useNeuApp();
-  onMounted(() => {
+  const settingStore = useSettingStore();
+  const {locale} =  useI18n()
+
+  onMounted(async () => {
     // load setting from the setting file
-    useSettingStore().loadSetting(neuApp);
+    await settingStore.loadSetting(neuApp);
+
+  });
+  // set lang
+  watch(() => settingStore.lang, async () => {
+    locale.value = settingStore.lang;
   });
 </script>
 
