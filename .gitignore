@@ -14,3 +14,10 @@
 node_modules
 
 .tmp
+
+# setting.json 
+setting.json
+
+# automatically generate the type file
+auto-imports.d.ts
+components.d.ts
