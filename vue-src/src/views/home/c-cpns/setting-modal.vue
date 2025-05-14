@@ -88,9 +88,10 @@
     if (hotkeyActiveIndex.value == 'translateHotkey')
       return globalHotkeys.translateHotkey = handleEditKeyboard(e)
   })
+
   const changeLanguageRef = ref(null)
   function handleSaveSetting() {
-    changeLanguageRef.value.changeStoreLang()
+    changeLanguageRef.value && changeLanguageRef.value.changeStoreLang()
     neuApp.globalHotkeys = {...globalHotkeys};
 
     settingStore.saveSetting(neuApp, {
