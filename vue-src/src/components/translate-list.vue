@@ -19,7 +19,7 @@ function changeCurrentIndex(index) {
       :class="{active: index === currentIndex}" @click="changeCurrentIndex(index)" >
         <div class="list-item-left flex-1">{{ item.translated }} </div>
         <div class="list-item-right">
-           {{ item.to }}
+          {{item.from }} <i class="i-carbon:arrow-right inline-block" /> {{ item.to }}
         </div>
       </div>
     </template>
