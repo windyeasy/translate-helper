@@ -24,8 +24,8 @@ Why rewrite one?？
 
 ## TODO LIST
 
-- [ ] 直接打包成一个exe文件
-- [ ] 开机自动启动
+- [ ] Packaged into a single exe file
+- [ ] Automatically start at boot
 
 ## Run
 
