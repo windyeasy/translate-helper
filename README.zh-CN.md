@@ -16,7 +16,7 @@
 
 ## 介绍
 
-一个桌面翻译辅助工具，当前仅支持Windows平台，使用[Neutralinojs](https://neutralino.js.org/)实现。参考[raycast-multi-translate](https://github.com/antfu/raycast-multi-translate)实现。
+一个桌面翻译辅助工具，当前仅支持Windows平台，使用[Neutralinojs](https://neutralino.js.org/)实现。参考[raycast-multi-translate](https://github.com/antfu/raycast-multi-translate)进行开发。
 
 为什么重新写一个？
 
@@ -67,11 +67,11 @@ neu run
 
 #### 扩展
 
-- 一些功能`Neutralinojs`不支持，可以扩展并使用`node`实现，由于`neutralinojs`打包会将`node`的`node_modules`打包进`neutralinojs`中，使用`pnpm`需要重新安装依赖，所以切换为npm安装node的依赖，可以不需要重新安装依赖。
+- 一些功能`Neutralinojs`不支持，但是支持编写扩展，而且可以使用`node`实现。由于`neutralinojs`打包会将`node`的`node_modules`打包到进应用中，使用`pnpm`需要重新安装依赖，所以切换为npm安装node的依赖，不需要重新安装。
 
 #### 注入全局变量
 
-- 在使用`@neutralinojs/lib`需要注入一些全局变量[Using Frontend Libraries](https://neutralino.js.org/docs/getting-started/using-frontend-libraries#initializiive-api-with-neutralinojslib)，没有全局变量无法建立websocket连接，导致功能不能使用。
+- 在使用`@neutralinojs/lib`需要注入一些全局变量，没有全局变量无法建立websocket连接，导致功能不能使用。[Using Frontend Libraries](https://neutralino.js.org/docs/getting-started/using-frontend-libraries#initializiive-api-with-neutralinojslib)
 
 - 在`index.html`添加如下代码：
 
@@ -87,7 +87,7 @@ neu run
 
 ![note2](./docs/assets/note2.png)
 
-- 当有些时候出现Bug无法关闭需要，`Ctrl+C`强制关闭进程，从而导致上面的添加的代码没有还原，在打包完成后会出现不能使用的问题，可以手动将地址改回来。
+- 当有些时候出现Bug无法关闭需要，`Ctrl+C`强制关闭进程，从而导致上面的添加的代码没有还原，在打包完成后会出现不能使用的问题，可以手动将内容替换回来。
 
 ## build
 
@@ -113,7 +113,8 @@ neu build
 ### 全局快捷键监听操作
 
 - 可以通过快捷键快速隐藏和打开应用
-- 使用另一个快捷键打开后会自动读取剪切板内容进行翻译，可以搭配`Ctrl+C`一起使用。这也是和[raycast-multi-translate](https://github.com/antfu/raycast-multi-translate)的区别，它支持快捷键打开时，获取选中内容。当有选中的内容时打开后直接进行翻译。[Neutralinojs](https://neutralino.js.org/)不支持这个功能，所以用法不太一样。
+- 使用另一个快捷键打开后会自动读取剪切板内容进行翻译，可以搭配`Ctrl+C`一起使用。
+  - 这也是和[raycast-multi-translate](https://github.com/antfu/raycast-multi-translate)的区别，它支持快捷键打开时，获取选中文本。当有选中的文本时快捷键打开后直接进行翻译。但是[Neutralinojs](https://neutralino.js.org/)不支持获取外部的选中文本。
 
 ## FAQ
 
