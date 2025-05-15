@@ -27,12 +27,11 @@
       "title": "TranslateHelper",
       "width": 900,
       "height": 700,
-      
       "center": true,
       "fullScreen": false,
       "alwaysOnTop": false,
       "icon": "/resources/icons/appIcon.png",
-      "enableInspector": true,
+      "enableInspector": false,
       "borderless": false,
       "maximize": false,
       "hidden": false,
