@@ -29,7 +29,7 @@
 
 ## 运行
 
-- 使用node 16.0及以上的版本
+- Node > 20.0
 
 ```sh
 npm install @neutralinojs/neu -g
@@ -39,10 +39,10 @@ neu update
 cd ./extensions/node-extensions
 npm install 
 
-cd ../vue-src
+cd ../../vue-src
 pnpm install
 
-cd ../..
+cd ../
 neu run
 ```
 
