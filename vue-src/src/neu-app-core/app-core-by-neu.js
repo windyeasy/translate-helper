@@ -117,6 +117,7 @@ class AppCoreByNeu extends EasyEventBus {
 
     return (...args) => {
       const e = args[0];
+      
       // 阻止执行多次
       if (
         currentKeyInfo.scanCode === e.scanCode &&
@@ -131,12 +132,11 @@ class AppCoreByNeu extends EasyEventBus {
       };
 
       if (e.state === "DOWN") {
-        hotkeyDownNames.push(e.name);
+        hotkeyDownNames.includes(e.name) || hotkeyDownNames.push(e.name);
       } else {
         hotkeyDownNames.includes(e.name) &&
           hotkeyDownNames.splice(hotkeyDownNames.indexOf(e.name), 1);
       }
-
       if (hotkeyDownNames.length === hotkey.length) {
         for (let i = 0; i < hotkey.length; i++) {
           const key = hotkey[i];
@@ -146,7 +146,6 @@ class AppCoreByNeu extends EasyEventBus {
             return;
           }
         }
-
         cb && cb(...args);
       }
     };
@@ -158,7 +157,7 @@ class AppCoreByNeu extends EasyEventBus {
     // 1. toggle by hotkey
     const cancelToggleHotkey = this.listenerGlobalKeyword(
       this.handleGlobalKeyboard(this.globalHotkeys.toggleHotkey, () => {
-       
+     
         if (this.isSetting) return
         this.changeWindowState();
       })
@@ -167,8 +166,6 @@ class AppCoreByNeu extends EasyEventBus {
     // 2. translate by hotkey
    const cancelTranslateHotkey =  this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.globalHotkeys.translateHotkey, async() => {
       if (this.isSetting) return
-      if (this.windowState === 'hide')
-        this.windowState = 'show' 
       this.activeWindow()
       // emit translate event
       const value = await this.clipboardReadText()
@@ -176,6 +173,7 @@ class AppCoreByNeu extends EasyEventBus {
     }))
     
     return () => {
+      console.log("unmount global keyboard")
       cancelToggleHotkey();
       cancelTranslateHotkey()
     }
@@ -190,8 +188,8 @@ class AppCoreByNeu extends EasyEventBus {
   }
 
   changeWindowState() {
-    this.windowState = this.windowState === "show" ? "hide" : "show";
-    if (this.windowState === "show") {
+   
+    if (this.windowState === "hide") {
       this.activeWindow();
     } else {
       this.hide();
@@ -222,13 +220,15 @@ class AppCoreByNeu extends EasyEventBus {
   /**
    * show the window of the app
    */
-  show() {
-    this.native.window.show();
+   show() {
+    this.windowState = "show";
+    return this.native.window.show();
   }
   /**
    * hide the window of the app
    */
   hide() {
+    this.windowState = "hide";
     this.native.window.hide();
   }
   /**
@@ -248,7 +248,7 @@ class AppCoreByNeu extends EasyEventBus {
 
   async activeWindow() {
     if (!(await this.native.window.isVisible())) {
-      await this.native.window.show();
+      await this.show()
     }
 
   
