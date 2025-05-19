@@ -1,6 +1,7 @@
 import EasyEventBus from "./ease-event-bus";
 
 import TranslatorByNeuApp from "./translator";
+import ShortcutManager from "./shortcut-manager";
 
 class AppCoreByNeu extends EasyEventBus {
   /**
@@ -9,10 +10,12 @@ class AppCoreByNeu extends EasyEventBus {
   constructor(Neu) {
     super()
     this.native = Neu;
-    this.translator = new TranslatorByNeuApp(this)
+ 
     this._extension = "js.neutralino.nodeext"; // handle hotkey by the extension of node 
     this.windowState = "show"; // hide or show
     this.isSetting = false
+    this.translator = new TranslatorByNeuApp(this)
+    this.shortcutManager = new ShortcutManager(this)
   }
   /**
    * @param {Object} config 
@@ -28,6 +31,7 @@ class AppCoreByNeu extends EasyEventBus {
     this.globalHotkeys.translateHotkey = config.translateHotkey || ["Alt", "D"];
     this.native.init();
     this.translator.init()
+    this.shortcutManager.init()
     this.settingPath = `${NL_PATH}/setting.json`
   
     // init task
@@ -35,9 +39,8 @@ class AppCoreByNeu extends EasyEventBus {
     this.setAppTray();
     // 2.The window close button dose not exit the app
     this.handleWindowClose();
+
     // 3. handle hotkey
-  
-    // 4. 实现开机自启功能, 后面实现
     const setting = await this.loadSettingJson();
  
     if (!setting.globalHotkeys){
@@ -97,85 +100,34 @@ class AppCoreByNeu extends EasyEventBus {
       this.hide();
     });
   }
-  checkKeyboard(key, value){
-    key = key.toUpperCase()
-    const valueArray = value.split(" ")
-    if (valueArray.length){
-      return key.toUpperCase() === valueArray.pop().toUpperCase()
-    }
-    return false
-  }
-  /**
-   * Handle global keyboard 
-   * @param {Array<String>} hotkey
-   * @param {Function} cb
-   * @return {Function}
-   */
-  handleGlobalKeyboard(hotkey, cb) {
-    const hotkeyDownNames = [];
-    let currentKeyInfo = {};
 
-    return (...args) => {
-      const e = args[0];
-      
-      // 阻止执行多次
-      if (
-        currentKeyInfo.scanCode === e.scanCode &&
-        currentKeyInfo.state === e.state
-      ) {
-        return;
-      }
-
-      currentKeyInfo = {
-        state: e.state,
-        scanCode: e.scanCode,
-      };
-
-      if (e.state === "DOWN") {
-        hotkeyDownNames.includes(e.name) || hotkeyDownNames.push(e.name);
-      } else {
-        hotkeyDownNames.includes(e.name) &&
-          hotkeyDownNames.splice(hotkeyDownNames.indexOf(e.name), 1);
-      }
-      if (hotkeyDownNames.length === hotkey.length) {
-        for (let i = 0; i < hotkey.length; i++) {
-          const key = hotkey[i];
-          // 有不匹配的就移除, 不执行后后面的结果代码
-          const checkValue = this.checkKeyboard(key, hotkeyDownNames[i]);
-          if (!checkValue) {
-            return;
-          }
-        }
-        cb && cb(...args);
-      }
-    };
-  }
+  
   /**
    * Neutralino doesn't support globalKeyboard, so we use extension to implement it.
    */
    handleHotkey() {
     // 1. toggle by hotkey
-    const cancelToggleHotkey = this.listenerGlobalKeyword(
-      this.handleGlobalKeyboard(this.globalHotkeys.toggleHotkey, () => {
-     
-        if (this.isSetting) return
-        this.changeWindowState();
-      })
-    );
+    const toggleHotkey = this.globalHotkeys.toggleHotkey.join("+");
+    this.shortcutManager.register(toggleHotkey, () => {
+      console.log("进入了")
+      if (this.isSetting) return
+      this.changeWindowState();
+    });
+  
 
     // 2. translate by hotkey
-   const cancelTranslateHotkey =  this.listenerGlobalKeyword(this.handleGlobalKeyboard(this.globalHotkeys.translateHotkey, async() => {
+    const translateHotkey = this.globalHotkeys.translateHotkey.join("+");
+    this.shortcutManager.register(translateHotkey, async() => {
       if (this.isSetting) return
       this.activeWindow()
       // emit translate event
       const value = await this.clipboardReadText()
       this.emit("neuTranslateByHotkey", value)
-    }))
+    });
     
     return () => {
-      console.log("unmount global keyboard")
-      cancelToggleHotkey();
-      cancelTranslateHotkey()
+      this.shortcutManager.unregister(toggleHotkey)
+      this.shortcutManager.unregister(translateHotkey)
     }
   }
   listenerGlobalKeyword(cb) {
@@ -188,7 +140,6 @@ class AppCoreByNeu extends EasyEventBus {
   }
 
   changeWindowState() {
-   
     if (this.windowState === "hide") {
       this.activeWindow();
     } else {

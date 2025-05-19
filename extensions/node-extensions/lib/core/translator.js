@@ -87,8 +87,7 @@ async function handleExtTranslate(neuExt){
       try {
       
         const result = await translateAll(text, from, languages)
-    
-      
+
         neuExt.dispatch('translateAllFromExt', {
             type: 'success',
             result, 
