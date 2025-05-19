@@ -1,6 +1,6 @@
 class TranslatorByNeuApp {
-  constructor(neuPpp){
-    this.neuApp = neuPpp;
+  constructor(neuApp){
+    this.neuApp = neuApp;
     this.pendingRequests  = new Map()
   }
   init(){
