@@ -1,0 +1,157 @@
+:root {
+  --c-bg: #fff;
+
+  --c-scrollbar: #eee;
+  --c-scrollbar-hover: #bbb;
+  --c-primary: #409EFF;
+
+  /* icon-item */
+  --c-item-bg: #ebe9e8;
+
+  /* modal */
+  --c-modal-bg: #fff;
+
+  /* text */
+  --c-text-color: #333;
+  --c-sub-text-color: #666;
+
+  /* border */
+  --c-border-color: #d6d3d1;
+
+  /* select */
+  --c-select-hover: #f5f7fa;
+ 
+
+  /* loading */
+  --c-loading: #9a9a9a;
+
+  /* action-section */
+  --c-as-active-bg: #f5f7fa;
+  --c-as-enter-item-bg: #e1dcda;
+
+  /* vue-select */
+  --vs-controls-color: var(--c-item-bg);
+  --vs-border-color: var(--c-border-color);
+
+  --vs-dropdown-bg: var(--c-bg);
+  --vs-dropdown-color: var(--c-text-color);
+  --vs-dropdown-option-color: var(--c-text-color);
+
+  --vs-selected-bg: var(--c-select-hover);
+  --vs-selected-color: var(--c-text-color);
+
+  --vs-search-input-color: var(--c-sub-text-color);
+
+  --vs-dropdown-option--active-bg: var(--c-select-hover);
+  --vs-dropdown-option--active-color: var(--c-text-color);
+  --vs-font-size: 14px;
+}
+
+html {
+  background-color: var(--c-bg);
+  color: var(--c-text-color);
+  overflow-x: hidden;
+}
+body {
+  background-color: var(--c-bg);
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+html.dark {
+  --c-bg: #262626;
+  --c-scrollbar: #111;
+  --c-scrollbar-hover: #222;
+
+  /* text */
+  --c-text-color: #f1f1f1;
+  --c-sub-text-color: #a7a7a7;
+
+  /* icon-item */
+  --c-item-bg: #404040;
+
+  /* border */
+  --c-border-color: #706e6e;
+
+  /* modal */
+  --c-modal-bg: rgba(30,30,30);
+
+  /* select */
+  --c-select-hover: #666;
+  --c-select-active: #f5f7fa;
+  --c-select-placeholder: #999;
+
+  /* action-section */
+  --c-as-active-bg: #2e2e2e;
+  --c-as-enter-item-bg: #666;
+}
+html body .vs-alert--toast  {
+  background-color: var(--c-bg);
+  border: solid 1px var(--c-border-color);
+}
+
+.vs-alert {
+  color: var(--c-text-color)!important;
+}
+
+::selection {
+  background: #8884;
+}
+
+* {
+  scrollbar-color: var(--c-scrollbar) var(--c-bg);
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--c-bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-scrollbar);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-scrollbar-hover);
+}
+
+/* box-sizing */
+div, main, footer, header {
+  box-sizing: border-box;
+}
+
+/* network-loading */
+.network-loading {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: '';
+    width: 20%;
+    height: 1px;
+    left: 0%;
+    bottom: 0;
+    background-color: var(--c-loading);
+    animation: moveLeft 0.5s ease-in infinite;
+  }
+}
+
+@keyframes moveLeft {
+  0% {
+    margin-left: 0%;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
