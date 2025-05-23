@@ -9,8 +9,9 @@ This template should help get you started developing with Tauri + Vue 3 in Vite.
 ## TODO
 
 - [x] Close hide window
-- [ ] SetTray
+- [x] SetTray
 - [ ] handle hotkey
+  - [ ] 获取选中的问题后，翻译，先打开，后面完成翻译功能后再处理
 - [ ] save setting config
 - [ ] translate，如何将node的翻译集成进来
   - [ ] translate

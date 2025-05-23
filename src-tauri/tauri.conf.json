@@ -12,12 +12,12 @@
   "app": {
     "windows": [
       {
-        "title": "translate-helper",
+        "fullscreen": false,
+        "title": "TranslateHelper",
         "width": 900,
         "height": 700,
         "center": true,
-        "resizable": false,
-        "decorations": false
+        "resizable": false
       }
     ],
     "security": {

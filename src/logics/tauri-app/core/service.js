@@ -3,6 +3,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import {exit} from "@tauri-apps/plugin-process";
 import { Menu } from '@tauri-apps/api/menu';
 import { createTrayIcon } from './tray-icon-enhanced';
+import ShortcutManager from './shortcut-manager';
 
 /**
  * 封装 Tauri API核心服务，提供这个APP的通用功能 
@@ -14,6 +15,7 @@ class TranslateHelperTauriService {
    */
   constructor() {
     this.window = null;
+    this.shortcutManger = new ShortcutManager();
   }
   /**
    * 初始化，有些实例是异步的，通过这个方法可以实现异步初始化赋值
@@ -22,6 +24,11 @@ class TranslateHelperTauriService {
    */
   async init(){
     this.window = await getCurrentWindow();
+    this.onFocusChanged((event) => {
+     if (!event.payload){
+      this.hide()
+     }
+    })
   }
   /**
    * 退出应用
@@ -54,14 +61,16 @@ class TranslateHelperTauriService {
     if (!trayIconOptions.menu &&  trayIconOptions.menuOptions){
       options.menu = await this.createMenu(trayIconOptions.menuOptions)
     }
+
     if (!trayIconOptions.action){
+      // todo: 不能实现点击左键打开窗口
       options.action = (event) => {
         if (e.type === 'Click' && e.button === 'Left' && event.buttonState === 'Down'){
           this.activeWindow()
         }
       }
     }
-  
+
     return createTrayIcon(options)
   }
 
@@ -102,6 +111,14 @@ class TranslateHelperTauriService {
       await this.window.hide();
     }
   }
+  async toggle(){
+    const isVisible = await this.getIsVisible()
+    if (isVisible){
+       return this.hide()
+    }else {
+       return this.activeWindow()
+    }
+  }
   /**
    * 监听窗口关闭事件
    * @param {Function} callback - 窗口关闭回调函数
@@ -113,14 +130,19 @@ class TranslateHelperTauriService {
       this.window.onCloseRequested(callback)
     }
   }
+  onFocusChanged(callback){
+    if(this.window){
+      this.window.onFocusChanged(callback)
+    }
+  }
   /**
    * 窗口是否可见
    * @async
    * @returns {Promise<boolean | undefined>} - 窗口是否可见
    */ 
   async getIsVisible() {
-   if (this.window) await this.window.isVisible()
-
+    if (this.window) 
+      return this.window.isVisible()
   }
   /**
    * 窗口是否最小化
@@ -147,11 +169,11 @@ class TranslateHelperTauriService {
   async activeWindow(){
     if (!(await this.getIsVisible())){
       await this.show()
-    }else {
-      if (await this.getIsminized())
-        await this.window.unminimize()
-      await this.setFocus()
     }
+    if (await this.getIsminized())
+      await this.window.unminimize()
+    await this.setFocus()
+    
   }
 }
 
