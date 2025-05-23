@@ -70,8 +70,7 @@ export async function destrayCacheTrayRids() {
   for (let id of cacheTray) {
     // 尝试关闭, 忽略错误，有可能缓存的是上一次打开应用存储的tray
     try {
-      const tray = await closeTrayByRid(id);
-      await tray.close();
+      await closeTrayByRid(id);
     } catch (error) {
       console.log('Close Tray Error:', error);
     }
