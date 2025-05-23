@@ -1,10 +1,9 @@
-import { TrayIcon } from '@tauri-apps/api/tray';
 import { defaultWindowIcon } from '@tauri-apps/api/app';
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {exit} from "@tauri-apps/plugin-process";
 import { Menu } from '@tauri-apps/api/menu';
-import { getCacheTrayIds, removeTrayRid, addTrayRid } from './logics';
-import { invoke } from '@tauri-apps/api/core';
+import { createTrayIcon } from './tray-icon-enhanced';
+
 /**
  * 封装 Tauri API核心服务，提供这个APP的通用功能 
  * @class
@@ -62,32 +61,10 @@ class TranslateHelperTauriService {
         }
       }
     }
-    // 避免创建多个tray
-    await this.destrayCacheTrayRids()
-    const tray = await TrayIcon.new(options)
-    addTrayRid(tray.rid)
- 
-    return tray
+  
+    return createTrayIcon(options)
   }
-  async destrayCacheTrayRids(){
-    const cacheTray = getCacheTrayIds() 
-    for (let id of cacheTray){
-      try {
-        const  tray = await this.closeTrayByRid(id)
-        console.log("close id:", id)
-        console.log(tray)
-        await tray.close()
-      }catch (error) {
-        console.log(error)
-      }
-      removeTrayRid(id)
-    }
-  }
-  closeTrayByRid(rid){
-    return invoke('plugin:resources|close', {
-      rid: rid
-    })
-  }
+
   /**
    * @param {Object} menuOptions - see {@link https://github.com/tauri-apps/tauri/blob/dev/packages/api/src/menu/menu.ts#L23} 
    * @returns Promise<Menu>
