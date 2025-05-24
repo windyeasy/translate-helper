@@ -16,6 +16,7 @@ import { storeToRefs } from "pinia";
 import useTranslateStore from "@/stores/translate";
 import { useShortcutManger } from "@/logics/hotkey";
 import { useTauriApp } from "@/logics/tauri-app";
+import {writeText} from "@/logics/clipboard"
 
 /** setting **/
 const showSettingModal = ref(false);
@@ -103,7 +104,7 @@ function handleTranslate(value) {
 
 async function handleCopy(value) {
   if (value) {
-    await neuApp.clipboardWriteText(value);
+    await writeText(value);
     VsToast.show({
       title: t("toast.copied"),
       variant: "success",
@@ -119,7 +120,6 @@ const { show } = storeToRefs(actionStore);
 const shortcutManager = useShortcutManger();
 // 快捷键打开action
 shortcutManager.register("Ctrl+K", (e) => {
-  console.log("进入了")
   e.preventDefault();
   if (showSettingModal.value) return;
   actionStore.toggleShow();

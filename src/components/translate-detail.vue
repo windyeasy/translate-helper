@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { getLanguageName } from "@/data/languages.js"
 import {useNeuApp} from "@/neu-app-core";
 import useTranslateStore from '@/stores/translate';
+import { writeText } from '@/logics/clipboard';
 
 const {t} = useI18n()
 
@@ -45,7 +46,7 @@ watchEffect(()  => {
 })
 
 async function copyText(text) {
-  await neuApp.clipboardWriteText(text)
+  await writeText(text)
  
   VsToast.show({
     title: t("toast.copied"),
