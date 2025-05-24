@@ -41,21 +41,31 @@ export class ShortcutManager {
   blockedDefaultBehavior(...keys) {
     keys.forEach((key) => this.blockedKeys.add(key));
   }
-
+  getModifierAliasMap() {
+    const isMac = this.platform === 'mac';
+    return {
+      ctrl: 'control',
+      control: 'control',
+      cmd: 'meta',
+      command: 'meta',
+      meta: 'meta',
+      primary: isMac ? 'meta' : 'control'
+    };
+  }
   normalizeCombination(combination) {
+    const aliasMap = this.getModifierAliasMap();
     return combination
       .toLowerCase()
       .split("+")
-      .map((key) => key.trim())
+      .map(key => aliasMap[key.trim()] || key.trim())
       .join("+");
   }
   keydownToCombination(e) {
-    const isMac = this.platform === 'mac';
     const keys = [];
 
-    if ((isMac && e.metaKey) || (!isMac && e.ctrlKey)) keys.push("Primary");
-    if (e.altKey) keys.push("Alt");
-    if (e.shiftKey) keys.push("Shift");
+    if (e.ctrlKey) keys.push("control");
+    if (e.altKey) keys.push("alt");
+    if (e.shiftKey) keys.push("shift");
 
     const key = e.key.toLowerCase();
     if (!["alt", "control", "meta", "shift"].includes(key)) {
@@ -72,8 +82,7 @@ export class ShortcutManager {
     }
   }
   handleCaptureHotkey(e) {
-    const combination = this.keydownToCombination(e);
-
+    const combination = this.displayCombination(this.keydownToCombination(e));
     this.captureFns.forEach((fn) => fn(combination, e));
   }
   /**
@@ -113,6 +122,23 @@ export class ShortcutManager {
     return Array.from(this.shortcuts.values()).map((shortcut) => ({
       ...shortcut,
     }));
+  }
+  /**
+   * 转换组合为用户友好的显示格式（用于 UI）
+   */
+  displayCombination(combination) {
+    const isMac = this.platform === 'mac';
+    const keyMap = {
+      control: 'Ctrl',
+      meta: isMac ? 'Cmd' : 'Meta',
+      alt: 'Alt',
+      shift: 'Shift'
+    };
+
+    return combination
+      .split('+')
+      .map(k => keyMap[k.toLowerCase()] || k.toUpperCase())
+      .join('+');
   }
 }
 
