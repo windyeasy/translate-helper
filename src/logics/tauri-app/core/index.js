@@ -1,71 +1,23 @@
-import TranslateHelperTauriService from "./service";
+import TranslateHelperTauriApp from "./translate-helper-tauri-app";
 /**
- * tauri app
- * @class
+ * @param {Object} config - 预留配置信息后面可能用到 
  */
-class TranslateHelperTauriApp {
-  /**
-   * @property {TranslateHelperTauriService} service - tauri service
-   *
-   */
-  constructor() {
-    this.service = new TranslateHelperTauriService();
-  }
-  /**
-   * init app
-   * @async
-   */
-  async init(config = {}) {
-    await this.service.init();
-    this.setTray()
-    this.changeWindowCloseDefaultBehavior();
-    this.openHotkey = config.openHotkey || 'Alt+K';
-   this.handlerShortcut()
-  }
-  /**
-   * 设置快捷键打开 
-   */
-  handlerShortcut(){
-    this.service.shortcutManger.register(this.openHotkey, async (e) => {
-      if (e.state === 'Pressed'){
-          this.service.toggle()
-      }
-    })
-  }
-  /**
-   * 设置系统托盘
-   */
-  setTray() {
-    this.service.setTray({
-      menuOptions: {
-        items: [
-          {
-            id: "SHOW",
-            text: "Open",
-            action: () => {
-              this.service.activeWindow();
-            },
-          },
-          {
-            id: "QUIT",
-            text: "Quit",
-            action: () => {
-              this.service.exit();
-            },
-          },
-        ],
-      },
-    });
-  }
-  /**
-   * 改变默认关闭行为
-   * @returns {Function} unlisten
-   */
-  changeWindowCloseDefaultBehavior() {
-    return this.service.onCloseWindow((e) => {
-      e.preventDefault();
-      this.service.hide();
-    });
-  }
+export function createTuriApp(config={}) {
+  return (app) => {
+    /**
+     * 向所有组件实例添加 tauriApp 实例
+     * @param {import('vue').ComponentPublicInstance} tauriApp
+     */
+    app.config.globalProperties.$tauriApp = new TranslateHelperTauriApp(config);
+    /**
+      * @typedef {import('vue').ComponentPublicInstance & {
+      *   $myClass: TranslateHelperTauriApp
+      * }} VueWithMyClass
+      */
+  };
 }
-export default TranslateHelperTauriApp;
+
+export {
+  TranslateHelperTauriApp
+}
+

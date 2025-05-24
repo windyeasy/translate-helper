@@ -4,6 +4,7 @@ import {exit} from "@tauri-apps/plugin-process";
 import { Menu } from '@tauri-apps/api/menu';
 import { createTrayIcon } from './tray-icon-enhanced';
 import ShortcutManager from './shortcut-manager';
+import { openUrl } from '@tauri-apps/plugin-opener'
 
 /**
  * 封装 Tauri API核心服务，提供这个APP的通用功能 
@@ -16,6 +17,7 @@ class TranslateHelperTauriService {
   constructor() {
     this.window = null;
     this.shortcutManger = new ShortcutManager();
+    this.focus = false
   }
   /**
    * 初始化，有些实例是异步的，通过这个方法可以实现异步初始化赋值
@@ -24,10 +26,9 @@ class TranslateHelperTauriService {
    */
   async init(){
     this.window = await getCurrentWindow();
+    // todo: 通过变量记录壮态，当没有焦点时，use hotkey 直接设置焦点，如果在焦点上关闭
     this.onFocusChanged((event) => {
-     if (!event.payload){
-      this.hide()
-     }
+      this.focus = event.payload
     })
   }
   /**
@@ -113,7 +114,7 @@ class TranslateHelperTauriService {
   }
   async toggle(){
     const isVisible = await this.getIsVisible()
-    if (isVisible){
+    if (isVisible && this.focus){
        return this.hide()
     }else {
        return this.activeWindow()
@@ -173,7 +174,15 @@ class TranslateHelperTauriService {
     if (await this.getIsminized())
       await this.window.unminimize()
     await this.setFocus()
-    
+  }
+
+  /**
+   * 通过默认浏览器打开网址
+   * @param {string} url - 网址
+   * @returns {Promise<void>}
+   */ 
+  openUrl(url){
+    return openUrl(url)
   }
 }
 

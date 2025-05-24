@@ -7,6 +7,7 @@ class ShortcutManager {
    * @param {String} combination - 快捷键
    * @param {Function} callback - 回调函数
    * @returns {Promise<void>}
+   * todo: 将快捷键映射为tauri能处理的
    */
   async register(combination, callback) {
     if (await this.isRegistered(combination)){

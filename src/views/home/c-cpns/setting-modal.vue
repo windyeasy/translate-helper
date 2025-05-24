@@ -1,10 +1,12 @@
 <script setup>
   import useSettingStore from "@/stores/setting";
-  import { useNeuApp } from "@/neu-app-core";
+  import { useTauriApp } from "@/logics/tauri-app";
   import { useKeydown } from "@/hooks/useKeydown";
 
+  import { useShortcutManger } from "@/logics/hotkey";
+
   const show = defineModel({ type: Boolean, default: false })
-  const neuApp = useNeuApp();
+  const tauriApp = useTauriApp();
 
   const settingStore = useSettingStore();
   const targetLanguages = ref([]);
@@ -14,7 +16,7 @@
       targetLanguages.value = [...settingStore.targetLanguages];
     }
     // todo: change
-    // neuApp.isSetting = show.value;
+    tauriApp.isSetting = show.value;
   });
 
   function addLangItem() {
@@ -39,12 +41,11 @@
       targetLanguages.value[i].name = "";
       targetLanguages.value[i].code = "";
     }
-   
   }
 
   function closeModal() {
     show.value = false;
-    neuApp.isSetting = false;
+    tauriApp.isSetting = false;
   }
 
   const activeTab = ref("languages");
@@ -55,12 +56,12 @@
 
   // hotkey
   const hotkeyActiveIndex = ref(null)
-  // const globalHotkeys = reactive({
-  //  ...neuApp.globalHotkeys
-  // })
-  // function changeHotkeyActiveIndex(index) {
-  //   hotkeyActiveIndex.value = index;
-  // }
+  const globalHotkeys = reactive({
+    toggleHotkey: tauriApp.toggleHotkey
+  })
+  function changeHotkeyActiveIndex(index) {
+    hotkeyActiveIndex.value = index;
+  }
 
   function handleEditKeyboard(e) {
     const hotkey = []
@@ -76,28 +77,24 @@
     if (e.key !== 'Alt' && e.key !== 'Control' && e.key !== 'Shift'){
       hotkey.push(e.key.charAt(0).toUpperCase())
     }
-    return hotkey
+    return hotkey.join('+')
   }
 
   // setting hotkey
-  useKeydown((e) => {
+  const shortcutManager = useShortcutManger()
+  shortcutManager.captureHotkey((hotkey) => {
     if (hotkeyActiveIndex.value == null || !show.value) return
    
     if (hotkeyActiveIndex.value == 'toggleHotkey') 
-      return globalHotkeys.toggleHotkey = handleEditKeyboard(e)
-      
-    if (hotkeyActiveIndex.value == 'translateHotkey')
-      return globalHotkeys.translateHotkey = handleEditKeyboard(e)
+      return globalHotkeys.toggleHotkey = hotkey
   })
-
+  
   const changeLanguageRef = ref(null)
   function handleSaveSetting() {
     changeLanguageRef.value && changeLanguageRef.value.changeStoreLang()
-    neuApp.globalHotkeys = {...globalHotkeys};
-
-    settingStore.saveSetting(neuApp, {
+    tauriApp.setToggleHotkey(globalHotkeys.toggleHotkey)
+    settingStore.saveSetting(tauriApp, {
       targetLanguages: [...targetLanguages.value], 
-      globalHotkeys:  neuApp.globalHotkeys
     });
    
     closeModal();
@@ -169,17 +166,7 @@
                 :class="{active: hotkeyActiveIndex === 'toggleHotkey'}"
                 @click.stop="changeHotkeyActiveIndex('toggleHotkey')"
               >
-                {{ globalHotkeys.toggleHotkey?.join("+") }}
-              </div>
-            </div>
-            <div class="hotkey-item flex pt-6 justify-between items-center">
-              <div class="item-title">{{ $t("label.translateHotkey") }}：</div>
-              <div 
-                class="hotkey-input" 
-                :class="{active: hotkeyActiveIndex === 'translateHotkey'}"
-                @click.stop="changeHotkeyActiveIndex('translateHotkey')"
-              >
-                {{ globalHotkeys.translateHotkey?.join("+") }}
+                {{ globalHotkeys.toggleHotkey }}
               </div>
             </div>
           </div>
