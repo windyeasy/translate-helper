@@ -1,6 +1,6 @@
 <script setup>
 import useActionStore from '@/stores/action';
-import { useNeuApp } from "@/neu-app-core";
+import { useTauriApp } from '@/logics/tauri-app';
 
 const props = defineProps({
   title: {
@@ -24,14 +24,13 @@ const active = computed(() => {
   return actionStore.sectionTitles[index] === props.title
 })
 
-const neuApp = useNeuApp();
+const tauriApp = useTauriApp();
 const actionClick = () => {
   const action = props.action
   if (action.type === 'openInBrowser'){
-    neuApp.openInBrowser(action.value);
+    tauriApp.openInBrowser(action.value);
   }
 }
-
 function handleEnterAction() {
   if (active.value){
     actionClick()
