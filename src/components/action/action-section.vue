@@ -37,13 +37,12 @@ function handleEnterAction() {
   }
 }
 
-// todo: change
+//
+const unListen =  tauriApp.event.listen("enterAction", handleEnterAction)
 
-// neuApp.on("enterAction", handleEnterAction)
-
-// onUnmounted(() => {
-//   neuApp.off("enterAction", handleEnterAction)
-// })
+onUnmounted(async () => {
+  unListen &&  unListen.then(fn => fn())
+})
 </script>
 
 <template>

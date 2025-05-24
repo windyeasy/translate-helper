@@ -1,4 +1,4 @@
-import useShortcutManger from "./use-shortcut-manger";
+import useShortcutManger from "./use-shortcut";
 import { shortcutManager, ShortcutManager } from "./shortcut-manager";
 
 export {

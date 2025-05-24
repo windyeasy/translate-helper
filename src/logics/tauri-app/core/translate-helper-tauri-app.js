@@ -1,6 +1,6 @@
 import TranslateHelperTauriService from "./service";
 import { readTextFile, BaseDirectory, exists, writeTextFile, mkdir } from '@tauri-apps/plugin-fs';
-
+import Event from "./event";
 /**
  * tauri app
  * @class
@@ -13,6 +13,7 @@ class TranslateHelperTauriApp {
   constructor(config = {}) {
     this.service = new TranslateHelperTauriService();
     this.isSetting = false;
+    this.event = new Event();
     this.init(config)
   }
   /**

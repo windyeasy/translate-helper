@@ -4,6 +4,10 @@ export class ShortcutManager {
     this.blockedKeys = new Set();
     this.captureFns = [];
     this.platform = this.getPlatform();
+    this.listenerCount = 0;
+    this.isListen = false
+    this.boundHandler = this.handleKeyDown.bind(this);
+    
   }
 
   getPlatform() {
@@ -27,6 +31,7 @@ export class ShortcutManager {
       callback,
       original: combination,
     });
+    this.listenerCount++
   }
 
   isRegistered(combination) {
@@ -109,10 +114,17 @@ export class ShortcutManager {
    * 开启使用监听键盘按下，为了节省开销将捕获和注册使用同一个监听
    */
   start() {
-    document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    if (!this.isListen){
+      document.addEventListener("keydown", this.boundHandler);
+      this.isListen = true;
+    }
   }
-  stop() {
-    document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+  stop() {   
+    this.listenerCount = Math.max(0, this.listenerCount - 1);
+    if (this.listenerCount === 0 && this.isListen){
+      document.removeEventListener("keydown", this.boundHandler);
+      this.isListen = false;
+    }
   }
   handleKeyDown(e) {
     this.handleHotkeyDown(e);
