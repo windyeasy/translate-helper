@@ -22,9 +22,12 @@ export default {
     inputText: 'Enter text to translate...'
   },
   toast: {
+    notTranslate: "Could not translate",
     setWarring: "Please set the target language first",
     clickMessage: "Click the setting button",
     translateErrorTitle: "Could not translate",
-    copied: "Copied"
+    copied: "Copied",
+    selectTargetLanguage: "Please select the target language",
+    
   }
 }

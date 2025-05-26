@@ -22,9 +22,11 @@ export default {
     inputText: '输入文字进行翻译...'
   },
   toast: {
+    notTranslate: "无法翻译",
     setWarring: "请先设置目标语言",
     clickMessage: "点击设置按钮",
     translateErrorTitle: "无法翻译",
-    copied: "已复制"
+    copied: "已复制",
+    selectTargetLanguage: "请选择目标语言",
   },
 }

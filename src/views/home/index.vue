@@ -56,7 +56,7 @@ function handleTranslate(value) {
     list.value = [];
     return;
   }
-  if (targetLangs.value.length === 0) {
+  if (targetLangs.value.length === 0 || !targetLangs.value[0]) {
     VsToast.show({
       title: t("toast.setWarring"),
       message: t("toast.clickMessage"),
