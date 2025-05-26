@@ -2,7 +2,7 @@ import TranslateHelperTauriApp from "./translate-helper-tauri-app";
 /**
  * @param {Object} config - 预留配置信息后面可能用到 
  */
-export function createTuriApp(config={}) {
+export function createTauriApp(config={}) {
   return (app) => {
     /**
      * 向所有组件实例添加 tauriApp 实例

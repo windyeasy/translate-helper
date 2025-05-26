@@ -4,7 +4,8 @@ import { createPinia } from 'pinia'
 import router from './router'
 import plugins from './plugins'
 import directives from './directives'
-import { createTuriApp } from './logics/tauri-app'
+import { createTauriApp } from './logics/tauri-app'
+import "./logics/translator/index"
 
 import "normalize.css"
 import 'virtual:uno.css'
@@ -17,7 +18,7 @@ app.use(router)
 
 app.use(directives)
 app.use(plugins)
-app.use(createTuriApp())
+app.use(createTauriApp())
 
 app.mount('#app')
 

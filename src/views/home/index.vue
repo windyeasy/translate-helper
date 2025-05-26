@@ -7,7 +7,6 @@ import VsToast from "@vuesimple/vs-toast";
 import { useI18n } from "vue-i18n";
 
 import { useKeydown } from "@/hooks/useKeydown";
-import { useNeuApp } from "@/neu-app-core";
 import useSettingStore from "@/stores/setting";
 import { languagesByCode } from "@/data/languages";
 
@@ -17,6 +16,7 @@ import useTranslateStore from "@/stores/translate";
 import { useShortcutManger } from "@/logics/hotkey";
 import { useTauriApp } from "@/logics/tauri-app";
 import {writeText} from "@/logics/clipboard"
+import { translateAll } from "@/logics/translator";
 
 /** setting **/
 const showSettingModal = ref(false);
@@ -30,7 +30,7 @@ const targetLangs = computed(() => {
 });
 const { t } = useI18n();
 /** translate **/
-const neuApp = useNeuApp();
+
 const isLoading = ref(false);
 
 const translateStore = useTranslateStore();
@@ -78,8 +78,7 @@ function handleTranslate(value) {
     fromLang.value = "auto";
   }
   const requestId = ++lastRequestId;
-  neuApp
-    .translateAll(sourceText, fromLang.value, targetLangs.value)
+  translateAll(sourceText, fromLang.value, targetLangs.value)
     .then((res) => {
       if (requestId === lastRequestId) {
         list.value = res;

@@ -4,14 +4,13 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
 import { getLanguageName } from "@/data/languages.js"
-import {useNeuApp} from "@/neu-app-core";
 import useTranslateStore from '@/stores/translate';
 import { writeText } from '@/logics/clipboard';
+import { translate } from '@/logics/translator';
 
 const {t} = useI18n()
 
 const {activeTranslate: translateResult} = storeToRefs(useTranslateStore())
-const neuApp = useNeuApp()
 const translateBackResult = ref({})
 const isLoading = ref(false)
 
@@ -23,7 +22,7 @@ const isSame = computed(() => {
 function handleTranslateBack(){
   const {translated, from, to } = translateResult.value
   isLoading.value = true
-  neuApp.translate(translated, to, from).then(res => {
+  translate(translated, to, from).then(res => {
     isLoading.value = false
     translateBackResult.value = res
 

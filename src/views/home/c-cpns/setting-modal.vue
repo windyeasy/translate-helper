@@ -15,7 +15,6 @@
     if (show.value) {
       targetLanguages.value = [...settingStore.targetLanguages];
     }
-    // todo: change
     tauriApp.isSetting = show.value;
   });
 

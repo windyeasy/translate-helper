@@ -22,6 +22,11 @@
     "global-shortcut:allow-unregister",
     "fs:default",
     "fs:allow-app-write",
-    "core:path:default"
+    "core:path:default",
+    "http:default",
+    {
+      "identifier": "http:default",
+      "allow": [{ "url": "https://*.google.com" }]
+    }
   ]
 }

@@ -1,6 +1,6 @@
 <script setup>
 import debounce from '@/logics/debounce'
-import { useNeuApp } from '@/neu-app-core'
+
 import VsToast from '@vuesimple/vs-toast';
 
 const props = defineProps({
@@ -27,7 +27,8 @@ function handleChangeKeyword(e) {
   debounceSearch() 
 }
 
-const neuApp = useNeuApp()
+// todo: 获取选中内容翻译
+
 // neuApp.on("neuTranslateByHotkey", async (value) => {
 //   if (!value) return
 //   keyword.value = value
