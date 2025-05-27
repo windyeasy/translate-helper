@@ -1,7 +1,7 @@
 <script setup>
+import { readText } from '@/logics/clipboard'
 import debounce from '@/logics/debounce'
-
-import VsToast from '@vuesimple/vs-toast';
+import { useTauriApp } from '@/logics/tauri-app'
 
 const props = defineProps({
   isLoading: {
@@ -27,14 +27,27 @@ function handleChangeKeyword(e) {
   debounceSearch() 
 }
 
-// todo: 获取选中内容翻译
+const tauriApp = useTauriApp()
 
-// neuApp.on("neuTranslateByHotkey", async (value) => {
-//   if (!value) return
-//   keyword.value = value
-//   debounceSearch()
-// })
+const canceListenPromise =  tauriApp.event.listen('translatedByHotkey', async () => {
+  const value = await readText()
+  if (!value) return
+  keyword.value = value
+  debounceSearch()
+})
+const inpRef = ref()
 
+onMounted(() => {
+  setTimeout(() => {
+    inpRef.value.focus()
+  }, 100)
+})
+
+onUnmounted(() => {
+  canceListenPromise.then(unFn => {
+    unFn()
+  })
+}) 
 
 </script>
 
@@ -46,6 +59,7 @@ function handleChangeKeyword(e) {
         </icon-item>
         <input type="text" 
           :value="keyword"
+          ref="inpRef"
           @input="handleChangeKeyword"
           class="ml-2 flex-1" 
           :placeholder="$t('placeholder.inputText')" 

@@ -26,14 +26,22 @@ class TranslateHelperTauriApp {
     this.changeWindowCloseDefaultBehavior();
     // global hotkey
     this.toggleHotkey = config.toggleHotkey || 'Alt+K';
+    this.translateHotkey = config.translateHotkey || 'Alt+D';
 
     this.createAppConfigDir()
     const setting = this.loadSettingJson()
     if (setting.toggleHotkey){
       this.toggleHotkey = setting.toggleHotkey
-    }else {
-      this.saveSettingJson({toggleHotkey: this.toggleHotkey})
     }
+    if (setting.translateHotkey){
+      this.translateHotkey = setting.translateHotkey
+    }
+
+    this.saveSettingJson({
+      toggleHotkey: this.toggleHotkey,
+      translateHotkey: this.translateHotkey
+    })
+    
 
     this.handlerShortcut()
   }
@@ -44,6 +52,12 @@ class TranslateHelperTauriApp {
     this.service.shortcutManger.register(this.toggleHotkey, async (e) => {
       if (e.state === 'Pressed' && !this.isSetting){
         this.service.toggle()
+      }
+    })
+    this.service.shortcutManger.register(this.translateHotkey, async (e) => {
+      if (e.state === 'Pressed' && !this.isSetting){
+        await this.service.activeWindow()
+        this.event.emit('translatedByHotkey')
       }
     })
   }
@@ -138,5 +152,30 @@ class TranslateHelperTauriApp {
     this.toggleHotkey = combination
     this.handlerShortcut()
   }
+  async setTranslateHotkey(combination){
+    // unregister old hotkey
+    if (combination === this.translateHotkey)
+      return
+    await this.service.shortcutManger.unregister(this.translateHotkey)
+    await this.saveSettingJson({translateHotkey: combination})
+    this.translateHotkey = combination
+    this.handlerShortcut()
+  }
+  async  setGlobalHotkey(toggleHotkey, translateHotkey){
+    if (this.toggleHotkey === translateHotkey && this.translateHotkey === translateHotkey) 
+      return
+    if (toggleHotkey !== this.toggleHotkey) {
+      await this.service.shortcutManger.unregister(this.toggleHotkey)
+      this.toggleHotkey = toggleHotkey
+    }
+    if (translateHotkey !== this.translateHotkey) {
+      await this.service.shortcutManger.unregister(this.translateHotkey)
+      this.translateHotkey = translateHotkey
+    }
+  
+    this.handlerShortcut()
+    await this.saveSettingJson({toggleHotkey, translateHotkey})
+  }
 }
+
 export default TranslateHelperTauriApp;

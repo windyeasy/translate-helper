@@ -13,7 +13,6 @@ const targetLanguages = ref([]);
 
 watch(() => show.value, () => {
   if (show.value) {
-    console.log("show modal")
     targetLanguages.value = [...settingStore.targetLanguages];
     if (!targetLanguages.value.length)
       addLangItem()
@@ -29,13 +28,10 @@ function addLangItem() {
 }
 
 function handleRemove(index) {
-
   if (targetLanguages.value[index]) {
-
-    console.log(targetLanguages.value[index])
     targetLanguages.value.splice(index, 1);
   }
-  console.log(targetLanguages)
+
 }
 
 function handleChangeModelValue(v, i) {
@@ -63,7 +59,8 @@ function changeActiveTab(value) {
 // hotkey
 const hotkeyActiveIndex = ref(null)
 const globalHotkeys = reactive({
-  toggleHotkey: tauriApp.toggleHotkey
+  toggleHotkey: tauriApp.toggleHotkey,
+  translateHotkey:  tauriApp.translateHotkey,
 })
 function changeHotkeyActiveIndex(index) {
   hotkeyActiveIndex.value = index;
@@ -77,6 +74,8 @@ shortcutManager.captureHotkey((hotkey) => {
 
   if (hotkeyActiveIndex.value == 'toggleHotkey')
     return globalHotkeys.toggleHotkey = hotkey
+  if (hotkeyActiveIndex.value == 'translateHotkey')
+    return globalHotkeys.translateHotkey = hotkey
 })
 
 const changeLanguageRef = ref(null)
@@ -99,7 +98,7 @@ function validateSetting() {
 function handleSaveSetting() {
   if (!validateSetting()) return
   changeLanguageRef.value && changeLanguageRef.value.changeStoreLang()
-  tauriApp.setToggleHotkey(globalHotkeys.toggleHotkey)
+  tauriApp.setGlobalHotkey(globalHotkeys.toggleHotkey, globalHotkeys.translateHotkey)
   settingStore.saveSetting(tauriApp, {
     targetLanguages: [...targetLanguages.value],
   });
@@ -153,6 +152,16 @@ function handleSaveSetting() {
                 {{ globalHotkeys.toggleHotkey }}
               </div>
             </div>
+            <div class="hotkey-item flex pt-6 justify-between items-center">
+              <div class="item-title">{{ $t("label.translateHotkey") }}：</div>
+              <div 
+                class="hotkey-input" 
+                :class="{active: hotkeyActiveIndex === 'translateHotkey'}"
+                @click.stop="changeHotkeyActiveIndex('translateHotkey')"
+              >
+                {{ globalHotkeys.translateHotkey }}
+              </div>
+            </div>
           </div>
         </template>
       </div>
@@ -173,7 +182,6 @@ function handleSaveSetting() {
 <style lang="scss" scoped>
 .mask {
   position: fixed;
-
   left: 0;
   top: 0;
   width: 100%;
