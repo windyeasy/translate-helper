@@ -1,20 +1,65 @@
-# Tauri + Vue 3
+<br>
+<br>
+<p align="center">
+<img src="./src/assets/logo.svg" width="140" height="140" align="center" />
+</p>
 
-This template should help get you started developing with Tauri + Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<h1 align="center">TranslateHelper</sup></h1>
 
-## Recommended IDE Setup
+<p align="center">
+A desktop translation assistance tool that supports translating multiple languages ​​at once.
+</p>
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+English | [简体中文](./README.zh-CN.md)
 
-## TODO
+<img width="862" src="./docs/assets/demo1.png">
 
-- [x] Close hide window
-- [x] SetTray
-- [x] handle hotkey
-  - [x] 获取选中的问题后，翻译，先打开，后面完成翻译功能后再处理
-- [x] save setting config
-- [ ] translate，如何将node的翻译集成进来
-  - [x] 通过浏览器打开地址
-  - [x] translate
-- [ ] 开机启动
-- [ ] 打包成一个单独的文件
+## Introcution
+
+A desktop translation assistance tool, currently only supports Windows platform, implemented using [Neutralinojs](https://neutralino.js.org/). Developed with reference to [raycast-multi-translate](https://github.com/antfu/raycast-multi-translate).
+
+Why rewrite one?？
+
+- Because [raycast-multi-translate](https://github.com/antfu/raycast-multi-translate) does not support the Windows platform, I use the Windows platform, so I re-implement one.
+
+## Run
+
+- Node > 18.0
+
+Prerequisites, installation dependencies and compilation environment: [https://v2.tauri.app/start/prerequisites](https://v2.tauri.app/start/prerequisites)
+
+```sh
+pnpm install
+pnpm run tauri-dev
+```
+
+## build
+
+```sh
+pnpm run tauri-build
+```
+
+## Features
+
+### Multiple Translations Targets
+
+Supports translating multiple languages ​​at once. By clicking the settings button, you can add multiple translation targets.
+
+![Multiple Translations Targets](./docs/assets/demo2.png)
+
+### i18n
+
+Support Chinese or English.
+
+![i18n](./docs/assets/demo3.png)
+![i18n](./docs/assets/demo4.png)
+
+### Global shortcut key monitoring operation
+
+- You can quickly hide and open applications through shortcut keys
+- Note that using another shortcut key to open it will automatically read the clipboard content for translation. It can be used together with `Ctrl+C`.
+  - This is also different from [raycast-multi-translate](https://github.com/antfu/raycast-multi-translate), which supports getting the selected text when the shortcut key is turned on. When there is selected text, the shortcut key can be opened to translate directly, but [Neutralinojs](https://neutralino.js.org/) does not support obtaining external selected text.
+
+## License
+
+It is [MIT](./LICENSE).
