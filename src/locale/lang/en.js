@@ -11,7 +11,8 @@ export default {
     copy: 'Copy',
     appHotkey: 'Trigger the app with hotkey',
     translateHotkey: 'Translate clipboard with hotkey',
-    noResults: "No Results"
+    noResults: "No Results",
+    autoStart: "Auto Start"
   },
   tab: {
     control: "Control",

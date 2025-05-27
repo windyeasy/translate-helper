@@ -15,7 +15,6 @@ This template should help get you started developing with Tauri + Vue 3 in Vite.
 - [x] save setting config
 - [ ] translate，如何将node的翻译集成进来
   - [x] 通过浏览器打开地址
-  - [ ] translate
-  - [ ] 获取选中的文本
+  - [x] translate
 - [ ] 开机启动
 - [ ] 打包成一个单独的文件

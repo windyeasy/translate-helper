@@ -11,7 +11,8 @@ export default {
     copy: '复制',
     appHotkey: '触发app快捷键',
     translateHotkey: '快捷键翻译剪贴板',
-    noResults: "无结果"
+    noResults: "无结果",
+    autoStart: "开机自启"
   },
   tab: {
     control: "控制",

@@ -144,6 +144,7 @@ function handleSaveSetting() {
 
         <template v-else>
           <div class="global-hotkeys w-[460px]">
+            <set-autostart />
             <change-language ref="changeLanguageRef" />
             <div class="hotkey-item flex pt-6 justify-between items-center">
               <div class="item-title">{{ $t("label.appHotkey") }}:</div>
