@@ -5,6 +5,7 @@ import { Menu } from '@tauri-apps/api/menu';
 import { createTrayIcon } from './tray-icon-enhanced';
 import ShortcutManager from './shortcut-manager';
 import { openUrl } from '@tauri-apps/plugin-opener'
+import { event } from '@tauri-apps/api';
 
 /**
  * 封装 Tauri API核心服务，提供这个APP的通用功能 
@@ -64,12 +65,13 @@ class TranslateHelperTauriService {
     }
 
     if (!trayIconOptions.action){
-      // todo: 不能实现点击左键打开窗口
-      options.action = (event) => {
-        if (e.type === 'Click' && e.button === 'Left' && event.buttonState === 'Down'){
-          this.activeWindow()
+      Object.assign(options, {
+        action: (e) => {
+          if (e.type === 'Click' && e.button === 'Left' && e.buttonState === 'Down'){
+            this.activeWindow()
+          }
         }
-      }
+      })
     }
 
     return createTrayIcon(options)
