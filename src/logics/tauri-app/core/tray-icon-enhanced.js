@@ -87,5 +87,17 @@ export async function createTrayIcon(trayIconOptions) {
   await destrayCacheTrayRids();
   const tray = await TrayIcon.new(trayIconOptions);
   addTrayRid(tray.rid);
+
+  // 通过重写close方法，在关闭的时候，会删除缓存的tray的rid, 猴补丁实现（monkey patch）
+  const close = function () {
+    removeTrayRid(tray.rid)
+    return tray.close();
+  }
+  tray.close = close
+  if (document) {
+    document.addEventListener('beforeunload',() => {
+      tray.close()
+    })
+  }
   return tray;
 }

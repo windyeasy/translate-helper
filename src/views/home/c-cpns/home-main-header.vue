@@ -20,7 +20,7 @@ function resetKeyword() {
   
 const debounceSearch =  debounce(() => {
   emit('search', keyword.value.trim())
-}, 500)
+}, 800)
 
 function handleChangeKeyword(e) {
   keyword.value = e.target.value
